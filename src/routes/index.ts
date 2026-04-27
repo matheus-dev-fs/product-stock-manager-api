@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express';
 
-const router = Router();
+const router: Router = Router();
 
-router.get('/ping', (req: Request, res: Response) => {
+router.get('/ping', (req: Request, res: Response): void => {
     res.json({ pong: true });
 });
 

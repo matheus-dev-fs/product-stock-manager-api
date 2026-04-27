@@ -1,12 +1,12 @@
 {
-  "name": "b7estoque-backend",
+  "name": "product-stock-manager-api",
   "version": "1.0.0",
   "main": "dist/server.js",
   "type": "module",
   "scripts": {
     "dev": "tsx watch --env-file=.env src/server.ts",
     "build": "tsc",
-    "start": "node --env-file=.env dist/server.js",
+    "start": "node dist/server.js",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
