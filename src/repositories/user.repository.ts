@@ -1,25 +1,20 @@
 import { and, eq, isNull } from "drizzle-orm";
 import { db } from "../db/connection";
 import { NewUser, User, users } from "../db/schema";
-import { Result } from "../types/result/result.type";
+import { DatabaseError } from "../errors/database.error";
 
-export const createUser = async (data: NewUser): Promise<Result<User, string>> => {
+export const createUser = async (data: NewUser): Promise<User> => {
     const result: User[] = await db.insert(users).values(data).returning();
 
     if (result.length === 0) {
-        return {
-            error: "Erro ao criar usuário",
-            data: null
-        };
+        throw new DatabaseError("Erro ao criar usuário");
     }
 
-    return {
-        error: null,
-        data: result[0]
-    };
+    const user: User = result[0];
+    return user;
 };
 
-export const getUserByEmail = async (email: string): Promise<Result<User, string>> => {
+export const getUserByEmail = async (email: string): Promise<User | null> => {
     const result: User[] = await db
         .select()
         .from(users)
@@ -32,14 +27,8 @@ export const getUserByEmail = async (email: string): Promise<Result<User, string
         .limit(1);
     
     if (result.length === 0) {
-        return {
-            error: "Usuário não encontrado",
-            data: null
-        };
+        return null;
     }
 
-    return {
-        error: null,
-        data: result[0]
-    };
+    return result[0];
 };
