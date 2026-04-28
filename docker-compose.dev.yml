@@ -1,6 +1,6 @@
 services:
-  backend:
-    container_name: backend
+  app:
+    container_name: app
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -10,11 +10,12 @@ services:
       - "${PORT:-3000}:${PORT:-3000}"
     volumes:
       - .:/app
-      - ./public/avatars:/app/public/avatars
+      - avatars:/app/public/avatars
       - /app/node_modules
     depends_on:
-      - db
-
+      db:
+        condition: service_healthy
+          
   db:
     container_name: db
     image: postgres:16
@@ -25,6 +26,12 @@ services:
     restart: always
     volumes:
       - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-product_stock_manager}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   db_data:
+  avatars:
