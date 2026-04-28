@@ -36,6 +36,10 @@ export const login = async (email: string, password: string): Promise<AuthRespon
     }
 };
 
+export const logout = async (refreshToken: string): Promise<void> => {
+    await refreshTokenService.deleteRefreshToken(refreshToken);
+}
+
 export const refreshTokens = async (refreshToken: string): Promise<AuthResponse> => {
     const existingToken: RefreshToken | null = await refreshTokenService.findRefreshToken(refreshToken);
 

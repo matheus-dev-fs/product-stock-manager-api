@@ -10,6 +10,12 @@ export const login: RequestHandler = async (req, res): Promise<void> => {
     res.status(200).json({ error: null, data: loginResponse });
 };
 
+export const logout: RequestHandler = async (req, res): Promise<void> => {
+    const refreshTokenData = refreshTokenSchema.parse(req.body);
+    await authService.logout(refreshTokenData.refreshToken);
+    res.status(200).json({ error: null, data: { message: 'Logout realizado com sucesso' } });
+}
+
 export const refreshTokens: RequestHandler = async (req, res): Promise<void> => {
     const refreshTokenData = refreshTokenSchema.parse(req.body);
     const loginResponse: AuthResponse = await authService.refreshTokens(refreshTokenData.refreshToken);
