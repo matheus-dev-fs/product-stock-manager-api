@@ -24,6 +24,6 @@ export const createUser = async (data: NewUser): Promise<UserWithoutPassword> =>
 }
 
 export const getUserByEmail = async (email: string): Promise<User | null> => {
-    const user = await userRepository.getUserByEmail(email);
+    const user: User | null = await userRepository.getUserByEmail(email);
     return user;
 };
