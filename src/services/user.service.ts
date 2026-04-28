@@ -27,3 +27,8 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
     const user: User | null = await userRepository.getUserByEmail(email);
     return user;
 };
+
+export const getUserById = async (id: string): Promise<User | null> => {
+    const user: User | null = await userRepository.getUserById(id);
+    return user;
+}

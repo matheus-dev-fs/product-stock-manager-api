@@ -32,3 +32,22 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
 
     return result[0];
 };
+
+export const getUserById = async (id: string): Promise<User | null> => {
+    const result: User[] = await db
+        .select()
+        .from(users)
+        .where(
+            and(
+                eq(users.id, id),
+                isNull(users.deletedAt) // Correção aqui
+            )
+        )
+        .limit(1);
+    
+    if (result.length === 0) {
+        return null;
+    }
+
+    return result[0];
+}

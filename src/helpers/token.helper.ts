@@ -1,5 +1,6 @@
 import jwt, { SignOptions, JwtPayload } from 'jsonwebtoken';
 import { TokenPayload } from '../interfaces/token-payload.interface';
+import crypto from 'crypto';
 
 export const generateAccessToken = (payload: TokenPayload): string => {
     const secret = process.env.JWT_SECRET as string;
@@ -21,4 +22,8 @@ export const verifyAccessToken = (token: string): TokenPayload => {
         email: decoded.email,
         isAdmin: decoded.isAdmin as unknown as boolean
     };
+};
+
+export const generateRefreshToken = (): string => {
+    return crypto.randomBytes(32).toString('hex');
 };
