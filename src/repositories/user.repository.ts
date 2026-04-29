@@ -25,7 +25,7 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
             )
         )
         .limit(1);
-    
+
     if (result.length === 0) {
         return null;
     }
@@ -44,7 +44,7 @@ export const getUserById = async (id: string): Promise<User | null> => {
             )
         )
         .limit(1);
-    
+
     if (result.length === 0) {
         return null;
     }
@@ -59,6 +59,13 @@ export const listUsers = async (offset: number, limit: number): Promise<User[]> 
         .where(isNull(users.deletedAt))
         .offset(offset)
         .limit(limit);
-    
+
     return result;
 }
+
+export const deleteUserById = async (id: string): Promise<void> => {
+    await db
+        .update(users)
+        .set({ deletedAt: new Date() })
+        .where(eq(users.id, id));
+};

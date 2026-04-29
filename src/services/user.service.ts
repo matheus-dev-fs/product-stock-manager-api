@@ -47,3 +47,7 @@ export const listPublicUsers = async (offset: number, limit: number): Promise<Pu
     const users: User[] = await userRepository.listUsers(offset, limit);
     return users.map(formatUserResponse);
 }
+
+export const deleteUserById = async (id: string): Promise<void> => {
+    await userRepository.deleteUserById(id);
+}

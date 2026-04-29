@@ -23,6 +23,6 @@ export const listUsersSchema = z.object({
         .default(10)
 });
 
-export const getUserByIdSchema = z.object({
+export const userByIdSchema = z.object({
     id: z.uuid('ID deve ser um UUID válido')
 });

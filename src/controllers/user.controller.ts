@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { createUserSchema, getUserByIdSchema, listUsersSchema } from "../validators/user.validator";
+import { createUserSchema, userByIdSchema, listUsersSchema } from "../validators/user.validator";
 import { PublicUser } from "../types/users/public-user.type";
 import *  as userService from "../services/user.service";
 import { AppError } from "../errors/app.error";
@@ -17,7 +17,7 @@ export const listPublicUsers: RequestHandler = async (req, res): Promise<void> =
 };
 
 export const getPublicUserById: RequestHandler = async (req, res): Promise<void> => {
-    const { id } = getUserByIdSchema.parse(req.params);
+    const { id } = userByIdSchema.parse(req.params);
     const user: PublicUser | null = await userService.getPublicUserById(id);
 
     if (!user) {
@@ -25,4 +25,10 @@ export const getPublicUserById: RequestHandler = async (req, res): Promise<void>
     }
 
     res.status(200).json({ error: null, data: user });
+};
+
+export const deleteUserById: RequestHandler = async (req, res): Promise<void> => {
+    const { id } = userByIdSchema.parse(req.params);
+    await userService.deleteUserById(id);
+    res.status(200).json({ error: null, data: null });
 };
