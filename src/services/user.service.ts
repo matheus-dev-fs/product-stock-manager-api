@@ -5,12 +5,12 @@ import * as userRepository from "../repositories/user.repository";
 import { PublicUser } from "../types/users/public-user.type";
 
 export const createUser = async (data: NewUser): Promise<PublicUser> => {
-    const existingUserResult: User | null = await userRepository.getUserByEmail(data.email);
+    const isEmailInUse: boolean = await userRepository.isEmailInUse(data.email);
 
-    if (existingUserResult) {
+    if (isEmailInUse) {
         throw new AppError(400, 'Email já está em uso');
     }
-
+    
     const hashedPassword: string = await hashPassword(data.password);
     
     const newUser: NewUser = {

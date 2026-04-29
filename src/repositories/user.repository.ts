@@ -21,7 +21,7 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
         .where(
             and(
                 eq(users.email, email),
-                isNull(users.deletedAt) // Correção aqui
+                isNull(users.deletedAt)
             )
         )
         .limit(1);
@@ -32,6 +32,16 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
 
     return result[0];
 };
+
+export const isEmailInUse = async (email: string): Promise<boolean> => {
+    const result: User[] = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, email))
+        .limit(1);
+
+    return result.length > 0;
+}
 
 export const getUserById = async (id: string): Promise<User | null> => {
     const result: User[] = await db
