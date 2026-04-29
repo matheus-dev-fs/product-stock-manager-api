@@ -1,7 +1,7 @@
-import { UserWithoutPassword } from "../users/user-without-password.type";
+import { PublicUser } from "../users/public-user.type";
 
 export type AuthResponse = {
-    user: UserWithoutPassword;
+    user: PublicUser;
     accessToken: string;
     refreshToken: string; 
 };

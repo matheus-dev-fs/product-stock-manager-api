@@ -4,7 +4,7 @@ import { AppError } from "../errors/app.error";
 import { generateAccessToken } from "../helpers/token.helper";
 import { comparePassword, formatUserResponse } from "../helpers/user.helpers";
 import { AuthResponse } from "../types/auth/auth-response.type";
-import { UserWithoutPassword } from "../types/users/user-without-password.type";
+import { PublicUser } from "../types/users/public-user.type";
 import * as userService from "./user.service";
 import * as refreshTokenService from "./refresh-token.service";
 
@@ -21,7 +21,7 @@ export const login = async (email: string, password: string): Promise<AuthRespon
         throw new AppError(401, 'Credenciais inválidas');
     }
 
-    const userResponse: UserWithoutPassword = formatUserResponse(existingUser);
+    const userResponse: PublicUser = formatUserResponse(existingUser);
     const accessToken: string = generateAccessToken({ 
         id: existingUser.id, 
         email: existingUser.email, 
@@ -58,7 +58,7 @@ export const refreshTokens = async (refreshToken: string): Promise<AuthResponse>
         throw new AppError(401, 'Usuário associado ao refresh token não encontrado');
     }
 
-    const userResponse: UserWithoutPassword = formatUserResponse(user);
+    const userResponse: PublicUser = formatUserResponse(user);
     const accessToken: string = generateAccessToken({ 
         id: user.id, 
         email: user.email, 

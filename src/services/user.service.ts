@@ -2,9 +2,9 @@ import { NewUser, User } from "../db/schema";
 import { AppError } from "../errors/app.error";
 import { formatUserResponse, hashPassword } from "../helpers/user.helpers";
 import * as userRepository from "../repositories/user.repository";
-import { UserWithoutPassword } from "../types/users/user-without-password.type";
+import { PublicUser } from "../types/users/public-user.type";
 
-export const createUser = async (data: NewUser): Promise<UserWithoutPassword> => {
+export const createUser = async (data: NewUser): Promise<PublicUser> => {
     const existingUserResult: User | null = await userRepository.getUserByEmail(data.email);
 
     if (existingUserResult) {
@@ -31,4 +31,14 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
 export const getUserById = async (id: string): Promise<User | null> => {
     const user: User | null = await userRepository.getUserById(id);
     return user;
+}
+
+export const getPublicUserById = async (id: string): Promise<PublicUser | null> => {
+    const user: User | null = await userRepository.getUserById(id);
+
+    if (!user) {
+        return null;
+    }
+
+    return formatUserResponse(user);
 }

@@ -8,7 +8,7 @@ export const users = pgTable('users', {
     avatar: text('avatar'),
     isAdmin: boolean('is_admin').notNull().default(false),
     deletedAt: timestamp('deleted_at'),
-    createAt: timestamp('created_at').notNull().defaultNow(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
