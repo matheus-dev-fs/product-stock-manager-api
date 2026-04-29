@@ -2,6 +2,7 @@ import { NewUser, User } from "../db/schema";
 import { AppError } from "../errors/app.error";
 import { formatUserResponse, hashPassword } from "../helpers/user.helpers";
 import * as userRepository from "../repositories/user.repository";
+import * as fileService from "./file.service";
 import { PublicUser } from "../types/users/public-user.type";
 
 export const createUser = async (data: NewUser): Promise<PublicUser> => {
@@ -72,6 +73,10 @@ export const updateUserById = async (id: string, data: Partial<NewUser>): Promis
         password: data.password ? await hashPassword(data.password) : undefined,
         updatedAt: new Date()
     };
+
+    if (data.avatar && userToBeUpdated.avatar && data.avatar !== userToBeUpdated.avatar) {
+        await fileService.deleteAvatar(userToBeUpdated.avatar);
+    }
 
     const updatedUser: User | null = await userRepository.updateUserById(id, updatedUserData);
 

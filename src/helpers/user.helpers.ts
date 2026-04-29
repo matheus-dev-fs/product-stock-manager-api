@@ -14,7 +14,7 @@ export const formatUserResponse = (user: User): PublicUser => {
     const { password, createdAt, updatedAt, deletedAt, ...PublicUser } = user;
 
     if (PublicUser.avatar) {
-        PublicUser.avatar = `${process.env.BASE_URL}/static/avatars/${PublicUser.avatar}`;
+        PublicUser.avatar = `${process.env.BASE_URL}/public/avatars/${PublicUser.avatar}`;
     }
 
     return PublicUser;
