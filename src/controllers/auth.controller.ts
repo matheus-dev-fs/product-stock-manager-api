@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { loginUserSchema } from "../validators/user.validator";
+import { loginUserSchema } from "../validators/auth.validator";
 import * as authService from "../services/auth.service";
 import * as userService from "../services/user.service";
 import { AuthResponse } from "../types/auth/auth-response.type";

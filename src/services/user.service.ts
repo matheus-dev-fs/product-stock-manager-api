@@ -42,3 +42,8 @@ export const getPublicUserById = async (id: string): Promise<PublicUser | null> 
 
     return formatUserResponse(user);
 }
+
+export const listPublicUsers = async (offset: number, limit: number): Promise<PublicUser[]> => {
+    const users: User[] = await userRepository.listUsers(offset, limit);
+    return users.map(formatUserResponse);
+}

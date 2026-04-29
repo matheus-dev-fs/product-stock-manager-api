@@ -51,3 +51,14 @@ export const getUserById = async (id: string): Promise<User | null> => {
 
     return result[0];
 }
+
+export const listUsers = async (offset: number, limit: number): Promise<User[]> => {
+    const result: User[] = await db
+        .select()
+        .from(users)
+        .where(isNull(users.deletedAt))
+        .offset(offset)
+        .limit(limit);
+    
+    return result;
+}
