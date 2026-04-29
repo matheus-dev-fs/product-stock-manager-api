@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import { DatabaseError } from '../errors/database.error';
 import { AppError } from '../errors/app.error';
+import { $ZodIssue } from 'zod/v4/core';
 
 export const globalErrorHandler = (
     err: Error & { status?: number, type?: string }, 
@@ -9,13 +10,23 @@ export const globalErrorHandler = (
     res: Response, 
     next: NextFunction
 ) => {
+    if (err.name === 'JsonWebTokenError') {
+        res.status(401).json({ error: 'Token de autenticação inválido.', data: null });
+        return;
+    }
+
+    if (err.name === 'TokenExpiredError') {
+        res.status(401).json({ error: 'Token de autenticação expirado.', data: null });
+        return;
+    }
+
     if (err instanceof SyntaxError && err.status === 400 && 'body' in err && err.type === 'entity.parse.failed') {
         res.status(400).json({ error: 'JSON malformado ou inválido', data: null });
         return;
     }
 
     if (err instanceof ZodError) {
-        const errorMessage: string = err.issues.map(issue => issue.message).join(', ');
+        const errorMessage: string = err.issues.map((issue: $ZodIssue): string => issue.message).join(', ');
         res.status(400).json({ error: errorMessage, data: null });
         return;
     }

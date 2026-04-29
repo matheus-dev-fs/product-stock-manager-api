@@ -27,3 +27,13 @@ export const verifyAccessToken = (token: string): TokenPayload => {
 export const generateRefreshToken = (): string => {
     return crypto.randomBytes(32).toString('hex');
 };
+
+export const parseBearerToken = (authHeader: string): string | null => {
+    const [scheme, token]: string[] = authHeader.split(' ');
+
+    if (scheme !== 'Bearer' || !token) {
+        return null;
+    }
+
+    return token;
+};
