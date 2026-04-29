@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { createUserSchema, userByIdSchema, listUsersSchema } from "../validators/user.validator";
+import { createUserSchema, userByIdSchema, listUsersSchema, updateUserSchema } from "../validators/user.validator";
 import { PublicUser } from "../types/users/public-user.type";
 import *  as userService from "../services/user.service";
 import { AppError } from "../errors/app.error";
@@ -31,4 +31,14 @@ export const deleteUserById: RequestHandler = async (req, res): Promise<void> =>
     const { id } = userByIdSchema.parse(req.params);
     await userService.deleteUserById(id);
     res.status(200).json({ error: null, data: null });
+};
+
+export const updateUserById: RequestHandler = async (req, res): Promise<void> => {
+    const { id } = userByIdSchema.parse(req.params);
+    const updateUserData = updateUserSchema.parse(req.body);
+
+    // TODO: Lidar com o upload do avatar futuramente
+
+    const updatedUser: PublicUser = await userService.updateUserById(id, updateUserData);
+    res.status(200).json({ error: null, data: updatedUser });
 };
