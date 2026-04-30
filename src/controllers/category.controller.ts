@@ -22,3 +22,10 @@ export const getCategoryById: RequestHandler = async (req, res): Promise<void> =
     const category: PublicCategory = await categoryService.getCategoryById(id);
     res.status(200).json({ error: null, data: category });
 };
+
+export const updateCategoryById: RequestHandler = async (req, res): Promise<void> => {
+    const { id } = categoryIdSchema.parse(req.params);
+    const updateCategoryData = categoryNameSchema.parse(req.body);
+    const updatedCategory: PublicCategory = await categoryService.updateCategoryById(id, updateCategoryData);
+    res.status(200).json({ error: null, data: updatedCategory });
+};

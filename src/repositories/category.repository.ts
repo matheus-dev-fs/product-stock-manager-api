@@ -52,3 +52,18 @@ export const getCategoryById = async (categoryId: string): Promise<Category | nu
         .limit(1);
     return category[0];
 };
+
+export const updateCategoryById = async (categoryId: string, categoryData: NewCategory): Promise<Category | null> => {
+    const result: Category[] = await db
+        .update(categories)
+        .set(categoryData)
+        .where(and(eq(categories.id, categoryId), isNull(categories.deletedAt)))
+        .returning();
+
+    if (result.length === 0) {
+        return null;
+    }
+
+    const updatedCategory: Category = result[0];
+    return updatedCategory;
+};
