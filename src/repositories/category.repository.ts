@@ -67,3 +67,9 @@ export const updateCategoryById = async (categoryId: string, categoryData: NewCa
     const updatedCategory: Category = result[0];
     return updatedCategory;
 };
+
+export const deleteCategoryById = async (categoryId: string): Promise<void> => {
+    await db.update(categories)
+        .set({ deletedAt: new Date() })
+        .where(and(eq(categories.id, categoryId), isNull(categories.deletedAt)));
+};
