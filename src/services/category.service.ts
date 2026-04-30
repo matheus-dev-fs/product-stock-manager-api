@@ -15,17 +15,17 @@ export const listPublicCategories = async (includeProductCount: boolean): Promis
     return await categoryRepository.listPublicCategories(includeProductCount);
 }
 
-export const getCategoryById = async (categoryId: string): Promise<PublicCategory> => {
+export const getCategoryById = async (categoryId: string): Promise<PublicCategory | null> => {
     const category: Category | null = await categoryRepository.getCategoryById(categoryId);
 
     if (!category) {
-        throw new AppError(404, 'Categoria não encontrada');
+        return null;
     }
 
     return formatCategory(category);
 }
 
-export const updateCategoryById = async (categoryId: string, categoryData: NewCategory): Promise<PublicCategory> => {
+export const updateCategoryById = async (categoryId: string, categoryData: NewCategory): Promise<PublicCategory | null> => {
     const updatedCategoryData: NewCategory = {
         ...categoryData,
         updatedAt: new Date()
@@ -34,7 +34,7 @@ export const updateCategoryById = async (categoryId: string, categoryData: NewCa
     const updatedCategory: Category | null = await categoryRepository.updateCategoryById(categoryId, updatedCategoryData);
 
     if (!updatedCategory) {
-        throw new AppError(404, 'Categoria não encontrada para atualização');
+        return null;
     }
 
     return formatCategory(updatedCategory);

@@ -49,6 +49,11 @@ export const updateUserById: RequestHandler = async (req, res): Promise<void> =>
          avatar: avatarFilename ?? undefined 
     };
 
-    const updatedUser: PublicUser = await userService.updateUserById(id, updatedData);
+    const updatedUser: PublicUser | null = await userService.updateUserById(id, updatedData);
+    
+    if (!updatedUser) {
+        throw new AppError(404, 'Usuário não encontrado');
+    }
+
     res.status(200).json({ error: null, data: updatedUser });
 };

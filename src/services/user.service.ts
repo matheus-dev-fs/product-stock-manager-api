@@ -53,11 +53,11 @@ export const deleteUserById = async (id: string): Promise<void> => {
     await userRepository.deleteUserById(id);
 }
 
-export const updateUserById = async (id: string, data: Partial<NewUser>): Promise<PublicUser> => {
+export const updateUserById = async (id: string, data: Partial<NewUser>): Promise<PublicUser | null> => {
     const userToBeUpdated: User | null = await userRepository.getUserById(id);
 
     if (!userToBeUpdated) {
-        throw new AppError(404, 'Usuário não encontrado');
+        return null;
     }
 
     if (data.email && data.email !== userToBeUpdated.email) {
@@ -81,7 +81,7 @@ export const updateUserById = async (id: string, data: Partial<NewUser>): Promis
     const updatedUser: User | null = await userRepository.updateUserById(id, updatedUserData);
 
     if (!updatedUser) {
-        throw new AppError(404, 'Usuário não encontrado');
+        return null;
     }
 
     return formatUserResponse(updatedUser);
