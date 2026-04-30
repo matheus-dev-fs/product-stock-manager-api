@@ -43,3 +43,12 @@ export const listPublicCategories = async (includeProductCount: boolean): Promis
 
     return categoriesList;
 }
+
+export const getCategoryById = async (categoryId: string): Promise<Category | null> => {
+    const category: Category[] | null = await db
+        .select()
+        .from(categories)
+        .where(and(eq(categories.id, categoryId), isNull(categories.deletedAt)))
+        .limit(1);
+    return category[0];
+};

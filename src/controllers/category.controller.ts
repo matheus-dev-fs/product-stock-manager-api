@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { categoryNameSchema, listCategoriesQuerySchema } from "../validators/category.validator";
+import { categoryIdSchema, categoryNameSchema, listCategoriesQuerySchema } from "../validators/category.validator";
 import * as categoryService from "../services/category.service";
 import { PublicCategory } from "../types/categories/public-category.type";
 import { Category } from "../db/schema";
@@ -15,4 +15,10 @@ export const listPublicCategories: RequestHandler = async (req, res): Promise<vo
     const { includeProductCount } = listCategoriesQuerySchema.parse(req.query);
     const categoriesList: CategoryWithProductCount[] = await categoryService.listPublicCategories(includeProductCount);
     res.status(200).json({ error: null, data: categoriesList });
+};
+
+export const getCategoryById: RequestHandler = async (req, res): Promise<void> => {
+    const { id } = categoryIdSchema.parse(req.params);
+    const category: PublicCategory = await categoryService.getCategoryById(id);
+    res.status(200).json({ error: null, data: category });
 };

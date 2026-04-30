@@ -9,3 +9,7 @@ export const categoryNameSchema = z.object({
 export const listCategoriesQuerySchema = z.object({
     includeProductCount: z.coerce.boolean().optional().default(false)
 }, "Um objeto de query string é esperado, com a propriedade 'includeProductCount' opcional do tipo booleano");
+
+export const categoryIdSchema = z.object({
+    id: z.uuid('O ID da categoria deve ser um UUID válido')
+}, "Um objeto de parâmetros é esperado, com a propriedade 'id' do tipo string e formato UUID");
