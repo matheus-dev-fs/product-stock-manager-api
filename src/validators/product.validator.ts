@@ -37,3 +37,20 @@ export const createProductSchema = z.object({
         message: 'A quantidade do produto não pode ser maior que a quantidade máxima',
         path: ['quantity'],
     });
+
+
+export const listProductsSchema = z.object({
+    offset: z.coerce.number('O offset deve ser um número')
+        .int('O offset deve ser um número inteiro')
+        .min(0, 'O offset deve ser um número inteiro positivo')
+        .default(0),
+    limit: z.coerce.number('O limit deve ser um número')
+        .int('O limit deve ser um número inteiro')
+        .min(1, 'O limit deve ser um número inteiro positivo')
+        .max(100, 'O limit deve ser no máximo 100')
+        .default(10),
+    search: z.string('O termo de busca deve ser uma string')
+        .min(2, 'O termo de busca deve ter pelo menos 2 caracteres')
+        .max(255, 'O termo de busca deve ter no máximo 255 caracteres')
+        .optional(),
+}, "Dados de listagem de produtos inválidos. Deve conter os seguintes campos: offset (número inteiro positivo), limit (número inteiro positivo, máximo 100)");

@@ -6,6 +6,7 @@ import { PublicProduct } from "../types/products/public-product.type";
 import { formatProduct } from "../helpers/products.helper";
 import { AppError } from "../errors/app.error";
 import { isMaxGteMin, isQuantityGteMin, isQuantityLteMax } from "../helpers/quantities.helper";
+import { ListPublicProducts } from "../types/products/list-public-product-type";
 
 export const createProduct = async (productData: NewProduct): Promise<PublicProduct> => {
     const isCategoryValid: PublicCategory | null = await categoryService.getCategoryById(productData.categoryId);
@@ -28,6 +29,11 @@ export const createProduct = async (productData: NewProduct): Promise<PublicProd
 
     const createdProduct: Product = await productRepository.createProduct(productData);
     return formatProduct(createdProduct);
+};
+
+export const listProducts = async (offset: number, limit: number, search?: string): Promise<ListPublicProducts> => {
+    const products: ListPublicProducts = await productRepository.listProducts(offset, limit, search);
+    return products;
 };
 
 export const getProductByCategoryId = async (categoryId: string): Promise<PublicProduct | null> => {
