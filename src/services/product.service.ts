@@ -6,7 +6,7 @@ import { PublicProduct } from "../types/products/public-product.type";
 import { formatProduct } from "../helpers/products.helper";
 import { AppError } from "../errors/app.error";
 import { isMaxGteMin, isQuantityGteMin, isQuantityLteMax } from "../helpers/quantities.helper";
-import { ListPublicProducts } from "../types/products/list-public-product-type";
+import { PublicProductWithDetails } from "../types/products/list-public-product-type";
 
 export const createProduct = async (productData: NewProduct): Promise<PublicProduct> => {
     const isCategoryValid: PublicCategory | null = await categoryService.getCategoryById(productData.categoryId);
@@ -31,12 +31,17 @@ export const createProduct = async (productData: NewProduct): Promise<PublicProd
     return formatProduct(createdProduct);
 };
 
-export const listProducts = async (offset: number, limit: number, search?: string): Promise<ListPublicProducts> => {
-    const products: ListPublicProducts = await productRepository.listProducts(offset, limit, search);
+export const listProducts = async (offset: number, limit: number, search?: string): Promise<PublicProductWithDetails[]> => {
+    const products: PublicProductWithDetails[] = await productRepository.listProducts(offset, limit, search);
     return products;
 };
 
 export const getProductByCategoryId = async (categoryId: string): Promise<PublicProduct | null> => {
     const product: Product | null = await productRepository.getProductByCategoryId(categoryId);
     return product ? formatProduct(product) : null;
+};
+
+export const getProductByIdWithCategory = async (productId: string): Promise<PublicProductWithDetails | null> => {
+    const product: PublicProductWithDetails | null = await productRepository.getProductByIdWithCategory(productId);
+    return product;
 };

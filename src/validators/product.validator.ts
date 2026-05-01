@@ -54,3 +54,7 @@ export const listProductsSchema = z.object({
         .max(255, 'O termo de busca deve ter no máximo 255 caracteres')
         .optional(),
 }, "Dados de listagem de produtos inválidos. Deve conter os seguintes campos: offset (número inteiro positivo), limit (número inteiro positivo, máximo 100)");
+
+export const productIdParamSchema = z.object({
+    id: z.uuid('O ID do produto deve ser um UUID válido'),
+}, "Parâmetro de ID de produto inválido. Deve conter o seguinte campo: id (UUID)");

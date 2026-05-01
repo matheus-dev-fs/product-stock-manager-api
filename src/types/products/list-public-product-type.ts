@@ -1,5 +1,5 @@
 import { PublicProduct } from "./public-product.type";
 
-export type ListPublicProducts = (PublicProduct & {
+export type PublicProductWithDetails = (PublicProduct & {
     categoryName: string | null;
-})[];
+});

@@ -2,7 +2,7 @@ import { and, eq, ilike, isNull } from "drizzle-orm";
 import { products, Product, NewProduct, categories } from "../db/schema";
 import { db } from "../db/connection";
 import { DatabaseError } from "../errors/database.error";
-import { ListPublicProducts } from "../types/products/list-public-product-type";
+import { PublicProductWithDetails } from "../types/products/list-public-product-type";
 
 export const createProduct = async (productData: NewProduct): Promise<Product> => {
     const createdProducts: Product[] = await db
@@ -17,7 +17,7 @@ export const createProduct = async (productData: NewProduct): Promise<Product> =
     return createdProducts[0];
 }
 
-export const listProducts = async (offset: number, limit: number, search?: string): Promise<ListPublicProducts> => {
+export const listProducts = async (offset: number, limit: number, search?: string): Promise<PublicProductWithDetails[]> => {
     const query = db
         .select({
             id: products.id,
@@ -57,4 +57,30 @@ export const getProductByCategoryId = async (categoryId: string): Promise<Produc
     }
 
     return productsList[0];
+};
+
+export const getProductByIdWithCategory = async (productId: string): Promise<PublicProductWithDetails | null> => {
+    const product: PublicProductWithDetails[] = await db
+        .select({
+            id: products.id,
+            name: products.name,
+            categoryId: products.categoryId,
+            unitPrice: products.unitPrice,
+            unityType: products.unityType,
+            quantity: products.quantity,
+            minimumQuantity: products.minimumQuantity,
+            maximumQuantity: products.maximumQuantity,
+            createdAt: products.createdAt,
+            categoryName: categories.name
+        })
+        .from(products)
+        .leftJoin(categories, eq(products.categoryId, categories.id))
+        .where(and(eq(products.id, productId), isNull(products.deletedAt)))
+        .limit(1);
+
+    if (product.length === 0) {
+        return null;
+    }
+
+    return product[0];
 };
