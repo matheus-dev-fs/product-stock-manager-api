@@ -1,10 +1,11 @@
 import { PublicCategory } from "../types/categories/public-category.type";
 import * as categoryRepository from "../repositories/category.repository";
 import * as productService from "./product.service";
-import { Category, NewCategory, Product } from "../db/schema";
+import { Category, NewCategory } from "../db/schema";
 import { formatCategory } from "../helpers/categories.helper";
 import { CategoryWithProductCount } from "../types/categories/category-with-product-count.type";
 import { AppError } from "../errors/app.error";
+import { PublicProduct } from "../types/products/public-product.type";
 
 export const createCategory = async (categoryData: NewCategory): Promise<PublicCategory> => {
     const createdCategory: Category = await categoryRepository.createCategory(categoryData);
@@ -41,7 +42,7 @@ export const updateCategoryById = async (categoryId: string, categoryData: NewCa
 };
 
 export const deleteCategoryById = async (categoryId: string): Promise<void> => {
-    const existingProductInCategory: Product | null = await productService.getProductByCategoryId(categoryId);
+    const existingProductInCategory: PublicProduct | null = await productService.getProductByCategoryId(categoryId);
 
     if (existingProductInCategory) {
         throw new AppError(400, 'Não é possível deletar a categoria pois existem produtos associados a ela');
