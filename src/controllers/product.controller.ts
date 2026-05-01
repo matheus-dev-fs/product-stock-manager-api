@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { createProductSchema, listProductsSchema, productIdParamSchema } from "../validators/product.validator";
+import { createProductSchema, listProductsSchema, productIdParamSchema, updateProductSchema } from "../validators/product.validator";
 import * as productService from "../services/product.service";
 import { PublicProduct } from "../types/products/public-product.type";
 import { PublicProductWithDetails } from "../types/products/list-public-product-type";
@@ -27,3 +27,15 @@ export const getProductByIdWithCategory: RequestHandler = async (req, res): Prom
 
     res.status(200).json({ error: null, data: product });
 };
+
+export const updateProductById: RequestHandler = async (req, res): Promise<void> => {
+    const { id } = productIdParamSchema.parse(req.params);
+    const updateProductData = updateProductSchema.parse(req.body);
+    const updatedProduct: PublicProduct | null = await productService.updateProductById(id, updateProductData);
+
+    if (!updatedProduct) {
+        throw new AppError(404, 'Produto não encontrado');
+    }
+
+    res.status(200).json({ error: null, data: updatedProduct });
+}

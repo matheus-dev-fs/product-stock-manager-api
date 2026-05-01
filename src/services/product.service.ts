@@ -45,3 +45,39 @@ export const getProductByIdWithCategory = async (productId: string): Promise<Pub
     const product: PublicProductWithDetails | null = await productRepository.getProductByIdWithCategory(productId);
     return product;
 };
+
+export const updateProductById = async (productId: string, productData: Partial<NewProduct>): Promise<PublicProduct | null> => {
+    const existingProduct: Product | null = await productRepository.getProductById(productId);
+
+    if (!existingProduct) {
+        return null;
+    }
+
+    if (productData.categoryId) {
+        const isCategoryValid: PublicCategory | null = await categoryService.getCategoryById(productData.categoryId);
+
+        if (!isCategoryValid) {
+            throw new AppError(404, 'Categoria não encontrada. Insira um categoryId válido para atualizar o produto');
+        }
+    }
+
+    if (!isMaxGteMin(productData.minimumQuantity, productData.maximumQuantity)) {
+        throw new AppError(400, 'A quantidade máxima deve ser maior ou igual à quantidade mínima');
+    }
+
+    if (!isQuantityGteMin(productData.quantity, productData.minimumQuantity)) {
+        throw new AppError(400, 'A quantidade do produto não pode ser menor que a quantidade mínima');
+    }
+
+    if (!isQuantityLteMax(productData.quantity, productData.maximumQuantity)) {
+        throw new AppError(400, 'A quantidade do produto não pode ser maior que a quantidade máxima');
+    }
+
+    const updatedProductData: Partial<NewProduct> = {
+        ...productData,
+        updatedAt: new Date()
+    };
+
+    const updatedProduct: Product | null = await productRepository.updateProductById(productId, updatedProductData);
+    return updatedProduct ? formatProduct(updatedProduct) : null;
+}
