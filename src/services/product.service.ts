@@ -81,3 +81,7 @@ export const updateProductById = async (productId: string, productData: Partial<
     const updatedProduct: Product | null = await productRepository.updateProductById(productId, updatedProductData);
     return updatedProduct ? formatProduct(updatedProduct) : null;
 }
+
+export const deleteProductById = async (productId: string): Promise<void> => {
+    await productRepository.deleteProductById(productId);
+}

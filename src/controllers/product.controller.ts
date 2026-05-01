@@ -39,3 +39,9 @@ export const updateProductById: RequestHandler = async (req, res): Promise<void>
 
     res.status(200).json({ error: null, data: updatedProduct });
 }
+
+export const deleteProductById: RequestHandler = async (req, res): Promise<void> => {
+    const { id } = productIdParamSchema.parse(req.params);
+    await productService.deleteProductById(id);
+    res.status(204).json({ error: null, data: null });
+};

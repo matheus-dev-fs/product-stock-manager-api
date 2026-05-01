@@ -77,14 +77,19 @@ export const deleteUserById = async (id: string): Promise<void> => {
     await db
         .update(users)
         .set({ deletedAt: new Date() })
-        .where(eq(users.id, id));
+        .where(
+            and(
+                eq(users.id, id), 
+                isNull(users.deletedAt)
+            )
+        );
 };
 
 export const updateUserById = async (id: string, data: Partial<NewUser>): Promise<User | null> => {
     const result: User[] = await db
         .update(users)
         .set(data)
-        .where(eq(users.id, id))
+        .where(and(eq(users.id, id), isNull(users.deletedAt)))
         .returning();
 
     if (result.length === 0) {

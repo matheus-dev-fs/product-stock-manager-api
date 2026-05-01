@@ -49,7 +49,12 @@ export const getProductById = async (productId: string): Promise<Product | null>
     const productsList: Product[] = await db
         .select()
         .from(products)
-        .where(and(eq(products.id, productId), isNull(products.deletedAt)))
+        .where(
+            and(
+                eq(products.id, productId), 
+                isNull(products.deletedAt)
+            )
+        )
         .limit(1);
 
     if (productsList.length === 0) {
@@ -63,7 +68,12 @@ export const getProductByCategoryId = async (categoryId: string): Promise<Produc
     const productsList: Product[] = await db
         .select()
         .from(products)
-        .where(and(eq(products.categoryId, categoryId), isNull(products.deletedAt)))
+        .where(
+            and(
+                eq(products.categoryId, categoryId),
+                isNull(products.deletedAt)
+            )
+        )
         .limit(1);
 
     if (productsList.length === 0) {
@@ -89,7 +99,12 @@ export const getProductByIdWithCategory = async (productId: string): Promise<Pub
         })
         .from(products)
         .leftJoin(categories, eq(products.categoryId, categories.id))
-        .where(and(eq(products.id, productId), isNull(products.deletedAt)))
+        .where(
+            and(
+                eq(products.id, productId),
+                isNull(products.deletedAt)
+            )
+        )
         .limit(1);
 
     if (product.length === 0) {
@@ -103,7 +118,12 @@ export const updateProductById = async (productId: string, productData: Partial<
     const updatedProducts: Product[] = await db
         .update(products)
         .set(productData)
-        .where(and(eq(products.id, productId), isNull(products.deletedAt)))
+        .where(
+            and(
+                eq(products.id, productId),
+                isNull(products.deletedAt)
+            )
+        )
         .returning();
 
     if (updatedProducts.length === 0) {
@@ -111,4 +131,16 @@ export const updateProductById = async (productId: string, productData: Partial<
     }
 
     return updatedProducts[0];
+};
+
+export const deleteProductById = async (productId: string): Promise<void> => {
+    await db
+        .update(products)
+        .set({ deletedAt: new Date() })
+        .where(
+            and(
+                eq(products.id, productId), 
+                isNull(products.deletedAt)
+            )
+        );
 };
