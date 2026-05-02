@@ -11,7 +11,7 @@ export const stockMovements = pgTable('stock_movements', {
     type: stockMovementsEnum('type').notNull(),
     quantity: numeric('quantity').notNull(),
     unitPrice: integer('unit_price').notNull(),
-    createAt: timestamp('created_at').notNull().defaultNow()
+    createdAt: timestamp('created_at').notNull().defaultNow()
 });
 
 export type StockMovement = typeof stockMovements.$inferSelect;

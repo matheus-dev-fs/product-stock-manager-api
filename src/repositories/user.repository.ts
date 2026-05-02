@@ -1,10 +1,13 @@
 import { and, eq, isNull } from "drizzle-orm";
-import { db } from "../db/connection";
+import { db as database } from "../db/connection";
 import { NewUser, User, users } from "../db/schema";
 import { DatabaseError } from "../errors/database.error";
 
-export const createUser = async (data: NewUser): Promise<User> => {
-    const result: User[] = await db.insert(users).values(data).returning();
+type DbClient = typeof database;
+
+export const createUser = async (data: NewUser, tx?: unknown): Promise<User> => {
+    const client: DbClient = (tx ?? database) as DbClient;
+    const result: User[] = await client.insert(users).values(data).returning();
 
     if (result.length === 0) {
         throw new DatabaseError("Erro ao criar usuário");
@@ -14,8 +17,9 @@ export const createUser = async (data: NewUser): Promise<User> => {
     return user;
 };
 
-export const getUserByEmail = async (email: string): Promise<User | null> => {
-    const result: User[] = await db
+export const getUserByEmail = async (email: string, tx?: unknown): Promise<User | null> => {
+    const client: DbClient = (tx ?? database) as DbClient;
+    const result: User[] = await client
         .select()
         .from(users)
         .where(
@@ -33,8 +37,9 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
     return result[0];
 };
 
-export const isEmailInUse = async (email: string): Promise<boolean> => {
-    const result: User[] = await db
+export const isEmailInUse = async (email: string, tx?: unknown): Promise<boolean> => {
+    const client: DbClient = (tx ?? database) as DbClient;
+    const result: User[] = await client
         .select()
         .from(users)
         .where(eq(users.email, email))
@@ -43,8 +48,9 @@ export const isEmailInUse = async (email: string): Promise<boolean> => {
     return result.length > 0;
 }
 
-export const getUserById = async (id: string): Promise<User | null> => {
-    const result: User[] = await db
+export const getUserById = async (id: string, tx?: unknown): Promise<User | null> => {
+    const client: DbClient = (tx ?? database) as DbClient;
+    const result: User[] = await client
         .select()
         .from(users)
         .where(
@@ -62,8 +68,9 @@ export const getUserById = async (id: string): Promise<User | null> => {
     return result[0];
 }
 
-export const listUsers = async (offset: number, limit: number): Promise<User[]> => {
-    const result: User[] = await db
+export const listUsers = async (offset: number, limit: number, tx?: unknown): Promise<User[]> => {
+    const client: DbClient = (tx ?? database) as DbClient;
+    const result: User[] = await client
         .select()
         .from(users)
         .where(isNull(users.deletedAt))
@@ -73,8 +80,9 @@ export const listUsers = async (offset: number, limit: number): Promise<User[]> 
     return result;
 }
 
-export const deleteUserById = async (id: string): Promise<void> => {
-    await db
+export const deleteUserById = async (id: string, tx?: unknown): Promise<void> => {
+    const client: DbClient = (tx ?? database) as DbClient;
+    await client
         .update(users)
         .set({ deletedAt: new Date() })
         .where(
@@ -85,8 +93,9 @@ export const deleteUserById = async (id: string): Promise<void> => {
         );
 };
 
-export const updateUserById = async (id: string, data: Partial<NewUser>): Promise<User | null> => {
-    const result: User[] = await db
+export const updateUserById = async (id: string, data: Partial<NewUser>, tx?: unknown): Promise<User | null> => {
+    const client: DbClient = (tx ?? database) as DbClient;
+    const result: User[] = await client
         .update(users)
         .set(data)
         .where(and(eq(users.id, id), isNull(users.deletedAt)))

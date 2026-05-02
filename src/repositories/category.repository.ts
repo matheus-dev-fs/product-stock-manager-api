@@ -1,11 +1,14 @@
 import { isNull, eq, and, sql } from "drizzle-orm";
-import { db } from "../db/connection"
+import { db as database } from "../db/connection"
 import { categories, Category, NewCategory, products, Product } from "../db/schema"
 import { DatabaseError } from "../errors/database.error";
 import { CategoryWithProductCount } from "../types/categories/category-with-product-count.type";
 
-export const createCategory = async (categoryData: NewCategory): Promise<Category> => {
-    const result: Category[] = await db.insert(categories).values(categoryData).returning();
+type DbClient = typeof database;
+
+export const createCategory = async (categoryData: NewCategory, tx?: unknown): Promise<Category> => {
+    const client: DbClient = (tx ?? database) as DbClient;
+    const result: Category[] = await client.insert(categories).values(categoryData).returning();
 
     if (result.length === 0) {
         throw new DatabaseError('Erro ao criar categoria');
@@ -15,11 +18,12 @@ export const createCategory = async (categoryData: NewCategory): Promise<Categor
     return newCategory;
 }
 
-export const listPublicCategories = async (includeProductCount: boolean): Promise<CategoryWithProductCount[]> => {
+export const listPublicCategories = async (includeProductCount: boolean, tx?: unknown): Promise<CategoryWithProductCount[]> => {
+    const client: DbClient = (tx ?? database) as DbClient;
     let categoriesList: CategoryWithProductCount[] = [];
 
     if (includeProductCount) {
-        categoriesList = await db
+        categoriesList = await client
             .select({
                 id: categories.id,
                 name: categories.name,
@@ -31,7 +35,7 @@ export const listPublicCategories = async (includeProductCount: boolean): Promis
             .where(and(isNull(categories.deletedAt), isNull(products.deletedAt)))
             .groupBy(categories.id);
     } else {
-        categoriesList = await db
+        categoriesList = await client
             .select({
                 id: categories.id,
                 name: categories.name,
@@ -44,8 +48,9 @@ export const listPublicCategories = async (includeProductCount: boolean): Promis
     return categoriesList;
 }
 
-export const getCategoryById = async (categoryId: string): Promise<Category | null> => {
-    const category: Category[] | null = await db
+export const getCategoryById = async (categoryId: string, tx?: unknown): Promise<Category | null> => {
+    const client: DbClient = (tx ?? database) as DbClient;
+    const category: Category[] | null = await client
         .select()
         .from(categories)
         .where(and(eq(categories.id, categoryId), isNull(categories.deletedAt)))
@@ -53,8 +58,9 @@ export const getCategoryById = async (categoryId: string): Promise<Category | nu
     return category[0];
 };
 
-export const updateCategoryById = async (categoryId: string, categoryData: NewCategory): Promise<Category | null> => {
-    const result: Category[] = await db
+export const updateCategoryById = async (categoryId: string, categoryData: NewCategory, tx?: unknown): Promise<Category | null> => {
+    const client: DbClient = (tx ?? database) as DbClient;
+    const result: Category[] = await client
         .update(categories)
         .set(categoryData)
         .where(and(eq(categories.id, categoryId), isNull(categories.deletedAt)))
@@ -68,8 +74,9 @@ export const updateCategoryById = async (categoryId: string, categoryData: NewCa
     return updatedCategory;
 };
 
-export const deleteCategoryById = async (categoryId: string): Promise<void> => {
-    await db.update(categories)
+export const deleteCategoryById = async (categoryId: string, tx?: unknown): Promise<void> => {
+    const client: DbClient = (tx ?? database) as DbClient;
+    await client.update(categories)
         .set({ deletedAt: new Date() })
         .where(and(eq(categories.id, categoryId), isNull(categories.deletedAt)));
 };

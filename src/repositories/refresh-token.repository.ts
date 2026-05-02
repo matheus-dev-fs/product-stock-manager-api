@@ -1,15 +1,18 @@
 import { eq } from "drizzle-orm";
-import { db } from "../db/connection";
+import { db as database } from "../db/connection";
 import { type NewRefreshToken, type RefreshToken, refreshTokens } from "../db/schema/refresh-token";
 import { DatabaseError } from "../errors/database.error";
 
-export const createRefreshToken = async (userId: string, token: string): Promise<RefreshToken> => {
+type DbClient = typeof database;
+
+export const createRefreshToken = async (userId: string, token: string, tx?: unknown): Promise<RefreshToken> => {
+    const client: DbClient = (tx ?? database) as DbClient;
     const newRefreshToken: NewRefreshToken = {
         userId,
         token
     };
 
-    const [createdToken]: RefreshToken[] = await db.insert(refreshTokens).values(newRefreshToken).returning();
+    const [createdToken]: RefreshToken[] = await client.insert(refreshTokens).values(newRefreshToken).returning();
 
     if (!createdToken) {
         throw new DatabaseError('Erro ao criar refresh token');
@@ -18,8 +21,9 @@ export const createRefreshToken = async (userId: string, token: string): Promise
     return createdToken;
 }
 
-export const findRefreshToken = async (token: string): Promise<RefreshToken | null> => {
-    const refreshToken: RefreshToken[]= await db
+export const findRefreshToken = async (token: string, tx?: unknown): Promise<RefreshToken | null> => {
+    const client: DbClient = (tx ?? database) as DbClient;
+    const refreshToken: RefreshToken[]= await client
         .select()
         .from(refreshTokens)
         .where(eq(
@@ -35,8 +39,9 @@ export const findRefreshToken = async (token: string): Promise<RefreshToken | nu
     return refreshToken[0];
 }
 
-export const deleteRefreshToken = async (token: string): Promise<void> => {
-    await db
+export const deleteRefreshToken = async (token: string, tx?: unknown): Promise<void> => {
+    const client: DbClient = (tx ?? database) as DbClient;
+    await client
         .delete(refreshTokens)
         .where(eq(
             refreshTokens.token, 
