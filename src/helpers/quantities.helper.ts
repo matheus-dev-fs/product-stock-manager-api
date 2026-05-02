@@ -21,32 +21,3 @@ export const isMaxGteMin = (minimum?: string | number, maximum?: string | number
 
     return mx >= mn;
 };
-
-export const isQuantityGteMin = (quantity?: string | number, minimum?: string | number): boolean => {
-    if (quantity == null || minimum == null) {
-        return true;
-    }
-
-    const q: number = toNumber(quantity);
-    const mn: number = toNumber(minimum);
-
-    if (Number.isNaN(q) || Number.isNaN(mn)) {
-        return false;
-    }
-
-    return q >= mn;
-};
-
-export const isQuantityLteMax = (quantity?: string | number, maximum?: string | number): boolean => {
-    if (quantity == null || maximum == null) {
-        return true;
-    }
-    const q: number = toNumber(quantity);
-    const mx: number = toNumber(maximum);
-
-    if (Number.isNaN(q) || Number.isNaN(mx)) {
-        return false;
-    }
-    
-    return q <= mx;
-};

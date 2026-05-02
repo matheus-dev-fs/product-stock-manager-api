@@ -5,7 +5,7 @@ import * as categoryService from "./category.service";
 import { PublicProduct } from "../types/products/public-product.type";
 import { formatProduct } from "../helpers/products.helper";
 import { AppError } from "../errors/app.error";
-import { isMaxGteMin, isQuantityGteMin, isQuantityLteMax } from "../helpers/quantities.helper";
+import { isMaxGteMin } from "../helpers/quantities.helper";
 import { PublicProductWithDetails } from "../types/products/list-public-product-type";
 import type { DbTransaction } from "../types/database/database.types";
 import { ProductStockInfo } from "../types/products/product-stock-info.type";
@@ -19,14 +19,6 @@ export const createProduct = async (productData: NewProduct): Promise<PublicProd
 
     if (!isMaxGteMin(productData.minimumQuantity, productData.maximumQuantity)) {
         throw new AppError(400, 'A quantidade máxima deve ser maior ou igual à quantidade mínima');
-    }
-
-    if (!isQuantityGteMin(productData.quantity, productData.minimumQuantity)) {
-        throw new AppError(400, 'A quantidade do produto não pode ser menor que a quantidade mínima');
-    }
-
-    if (!isQuantityLteMax(productData.quantity, productData.maximumQuantity)) {
-        throw new AppError(400, 'A quantidade do produto não pode ser maior que a quantidade máxima');
     }
 
     const createdProduct: Product = await productRepository.createProduct(productData);
@@ -65,14 +57,6 @@ export const updateProductById = async (productId: string, productData: Partial<
 
     if (!isMaxGteMin(productData.minimumQuantity, productData.maximumQuantity)) {
         throw new AppError(400, 'A quantidade máxima deve ser maior ou igual à quantidade mínima');
-    }
-
-    if (!isQuantityGteMin(productData.quantity, productData.minimumQuantity)) {
-        throw new AppError(400, 'A quantidade do produto não pode ser menor que a quantidade mínima');
-    }
-
-    if (!isQuantityLteMax(productData.quantity, productData.maximumQuantity)) {
-        throw new AppError(400, 'A quantidade do produto não pode ser maior que a quantidade máxima');
     }
 
     const updatedProductData: Partial<NewProduct> = {

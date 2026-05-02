@@ -1,5 +1,5 @@
 import z from "zod";
-import { isMaxGteMin, isQuantityGteMin, isQuantityLteMax } from "../helpers/quantities.helper";
+import { isMaxGteMin } from "../helpers/quantities.helper";
 
 export const createProductSchema = z.object({
     name: z.string('O nome do produto deve ser uma string')
@@ -28,14 +28,6 @@ export const createProductSchema = z.object({
     .refine((data): boolean => isMaxGteMin(data.minimumQuantity, data.maximumQuantity), {
         message: 'A quantidade máxima deve ser maior ou igual à quantidade mínima',
         path: ['maximumQuantity'],
-    })
-    .refine((data): boolean => isQuantityGteMin(data.quantity, data.minimumQuantity), {
-        message: 'A quantidade do produto não pode ser menor que a quantidade mínima',
-        path: ['quantity'],
-    })
-    .refine((data): boolean => isQuantityLteMax(data.quantity, data.maximumQuantity), {
-        message: 'A quantidade do produto não pode ser maior que a quantidade máxima',
-        path: ['quantity'],
     });
 
 
@@ -89,12 +81,4 @@ export const updateProductSchema = z.object({
     .refine((data): boolean => isMaxGteMin(data.minimumQuantity, data.maximumQuantity), {
         message: 'A quantidade máxima deve ser maior ou igual à quantidade mínima',
         path: ['maximumQuantity'],
-    })
-    .refine((data): boolean => isQuantityGteMin(data.quantity, data.minimumQuantity), {
-        message: 'A quantidade do produto não pode ser menor que a quantidade mínima',
-        path: ['quantity'],
-    })
-    .refine((data): boolean => isQuantityLteMax(data.quantity, data.maximumQuantity), {
-        message: 'A quantidade do produto não pode ser maior que a quantidade máxima',
-        path: ['quantity'],
     });
