@@ -1,19 +1,51 @@
-import { NewStockMovement, StockMovement, stockMovements } from "../db/schema";
+import { desc, eq } from "drizzle-orm";
+import { NewStockMovement, products, StockMovement, stockMovements } from "../db/schema";
 import { DatabaseError } from "../errors/database.error";
 import type { DbTransaction } from "../types/database/database.types";
+import { db } from "../db/connection";
+import { ListStockMovementsInput } from "../validators/stock-movement.validator";
+import { StockMovementWithDetails } from "../types/stock-movements/stock-movement-with-details.type";
 
 export const createStockMovement = async (
-	tx: DbTransaction,
-	data: NewStockMovement,
+    tx: DbTransaction,
+    data: NewStockMovement,
 ): Promise<StockMovement> => {
-	const [createdStockMovement]: StockMovement[] = await tx
-		.insert(stockMovements)
-		.values(data)
-		.returning();
+    const [createdStockMovement]: StockMovement[] = await tx
+        .insert(stockMovements)
+        .values(data)
+        .returning();
 
     if (!createdStockMovement) {
         throw new DatabaseError('Erro ao criar o movimento de estoque');
     }
 
-	return createdStockMovement;
+    return createdStockMovement;
+};
+
+export const listStockMovementsWithDetails = async (filters: ListStockMovementsInput): Promise<StockMovementWithDetails[]> => {
+    const { offset, limit, productId } = filters;
+
+    const query = db
+        .select({
+            id: stockMovements.id,
+            productId: stockMovements.productId,
+            productName: products.name,
+            userId: stockMovements.userId,
+            type: stockMovements.type,
+            quantity: stockMovements.quantity,
+            unitPrice: stockMovements.unitPrice,
+            createdAt: stockMovements.createdAt
+        })
+        .from(stockMovements)
+        .leftJoin(products, eq(stockMovements.productId, products.id))
+        .orderBy(desc(stockMovements.createdAt))
+        .offset(offset)
+        .limit(limit)
+        .$dynamic();
+
+    if (productId) {
+        query.where(eq(stockMovements.productId, productId));
+    }
+
+    return await query;
 };

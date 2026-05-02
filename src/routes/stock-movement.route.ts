@@ -4,5 +4,6 @@ import * as stockMovementController from '../controllers/stock-movement.controll
 const router = Router();
 
 router.post('/', stockMovementController.createStockMovement);
+router.get('/', stockMovementController.listStockMovementsWithDetails);
 
 export default router;

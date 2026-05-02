@@ -2,7 +2,7 @@ import { and, eq, ilike, isNull } from "drizzle-orm";
 import { products, Product, NewProduct, categories } from "../db/schema";
 import { db as database } from "../db/connection";
 import { DatabaseError } from "../errors/database.error";
-import { PublicProductWithDetails } from "../types/products/list-public-product-type";
+import { PublicProductWithDetails } from "../types/products/public-product-with-details.type";
 import { ProductStockInfo } from "../types/products/product-stock-info.type";
 
 import type { DbTransaction } from "../types/database/database.types";

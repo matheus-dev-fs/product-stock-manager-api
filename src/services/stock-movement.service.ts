@@ -5,6 +5,8 @@ import * as stockMovementRepository from "../repositories/stock-movement.reposit
 import * as productService from "./product.service";
 import { ProductStockInfo } from "../types/products/product-stock-info.type";
 import type { DbTransaction } from "../types/database/database.types";
+import { ListStockMovementsInput } from "../validators/stock-movement.validator";
+import { StockMovementWithDetails } from "../types/stock-movements/stock-movement-with-details.type";
 
 export const createStockMovement = async (data: Omit<NewStockMovement, 'unitPrice'>): Promise<StockMovement> => {
     return await transactionRunner.run<StockMovement>(async (txRunner: DbTransaction) => {
@@ -41,3 +43,7 @@ export const createStockMovement = async (data: Omit<NewStockMovement, 'unitPric
         return stockMovement;
     });
 };
+
+export const listStockMovementsWithDetails = async (filters: ListStockMovementsInput): Promise<StockMovementWithDetails[]> => {
+    return await stockMovementRepository.listStockMovementsWithDetails(filters);
+}

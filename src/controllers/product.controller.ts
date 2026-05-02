@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { createProductSchema, listProductsSchema, productIdParamSchema, updateProductSchema } from "../validators/product.validator";
 import * as productService from "../services/product.service";
 import { PublicProduct } from "../types/products/public-product.type";
-import { PublicProductWithDetails } from "../types/products/list-public-product-type";
+import { PublicProductWithDetails } from "../types/products/public-product-with-details.type";
 import { AppError } from "../errors/app.error";
 
 export const createProduct: RequestHandler = async (req, res): Promise<void> => {

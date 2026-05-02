@@ -6,7 +6,7 @@ import { PublicProduct } from "../types/products/public-product.type";
 import { formatProduct } from "../helpers/products.helper";
 import { AppError } from "../errors/app.error";
 import { isMaxGteMin } from "../helpers/quantities.helper";
-import { PublicProductWithDetails } from "../types/products/list-public-product-type";
+import { PublicProductWithDetails } from "../types/products/public-product-with-details.type";
 import type { DbTransaction } from "../types/database/database.types";
 import { ProductStockInfo } from "../types/products/product-stock-info.type";
 
