@@ -4,10 +4,11 @@ import { transactionRunner } from "../db/transaction-runner";
 import * as stockMovementRepository from "../repositories/stock-movement.repository";
 import * as productService from "./product.service";
 import { ProductStockInfo } from "../types/products/product-stock-info.type";
+import type { DbTransaction } from "../types/database/database.types";
 
-export const createStockMovement = async (data: Omit<NewStockMovement, 'unitPrice'>, tx?: unknown): Promise<StockMovement> => {
-    return await transactionRunner.run<StockMovement>(async (txRunner) => {
-        const product: ProductStockInfo | null = await productService.getProductStockInfoById(data.productId, txRunner);
+export const createStockMovement = async (data: Omit<NewStockMovement, 'unitPrice'>): Promise<StockMovement> => {
+    return await transactionRunner.run<StockMovement>(async (txRunner: DbTransaction) => {
+        const product: ProductStockInfo | null = await productService.getProductStockInfoById(txRunner, data.productId);
 
         if (!product) {
             throw new AppError(404, 'Produto não encontrado');
@@ -20,19 +21,19 @@ export const createStockMovement = async (data: Omit<NewStockMovement, 'unitPric
             throw new AppError(400, `Quantidade de estoque insuficiente. Disponível: ${currentQuantity}, solicitado: ${movementQuantity}`);
         }
 
-        const stockMovement: StockMovement = await stockMovementRepository.createStockMovement({
+        const stockMovement: StockMovement = await stockMovementRepository.createStockMovement(txRunner, {
             ...data,
             unitPrice: product.unitPrice,
-        }, txRunner);
+        });
 
         const nextQuantity: number = data.type === 'IN'
             ? currentQuantity + movementQuantity
             : currentQuantity - movementQuantity;
 
         await productService.updateProductQuantity(
+            txRunner,
             data.productId,
-            nextQuantity.toString(),
-            txRunner
+            nextQuantity.toString()
         );
 
         return stockMovement;

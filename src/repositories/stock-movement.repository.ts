@@ -1,17 +1,12 @@
-import { and, eq, isNull } from "drizzle-orm";
-import { db as database } from "../db/connection";
 import { NewStockMovement, StockMovement, stockMovements } from "../db/schema";
 import { DatabaseError } from "../errors/database.error";
-
-type DbClient = typeof database;
+import type { DbTransaction } from "../types/database/database.types";
 
 export const createStockMovement = async (
+	tx: DbTransaction,
 	data: NewStockMovement,
-	tx?: unknown
 ): Promise<StockMovement> => {
-	const client: DbClient = (tx ?? database) as DbClient;
-
-	const [createdStockMovement]: StockMovement[] = await client
+	const [createdStockMovement]: StockMovement[] = await tx
 		.insert(stockMovements)
 		.values(data)
 		.returning();

@@ -3,16 +3,13 @@ import { db as database } from "../db/connection";
 import { type NewRefreshToken, type RefreshToken, refreshTokens } from "../db/schema/refresh-token";
 import { DatabaseError } from "../errors/database.error";
 
-type DbClient = typeof database;
-
-export const createRefreshToken = async (userId: string, token: string, tx?: unknown): Promise<RefreshToken> => {
-    const client: DbClient = (tx ?? database) as DbClient;
+export const createRefreshToken = async (userId: string, token: string): Promise<RefreshToken> => {
     const newRefreshToken: NewRefreshToken = {
         userId,
         token
     };
 
-    const [createdToken]: RefreshToken[] = await client.insert(refreshTokens).values(newRefreshToken).returning();
+    const [createdToken]: RefreshToken[] = await database.insert(refreshTokens).values(newRefreshToken).returning();
 
     if (!createdToken) {
         throw new DatabaseError('Erro ao criar refresh token');
@@ -21,9 +18,8 @@ export const createRefreshToken = async (userId: string, token: string, tx?: unk
     return createdToken;
 }
 
-export const findRefreshToken = async (token: string, tx?: unknown): Promise<RefreshToken | null> => {
-    const client: DbClient = (tx ?? database) as DbClient;
-    const refreshToken: RefreshToken[]= await client
+export const findRefreshToken = async (token: string): Promise<RefreshToken | null> => {
+    const refreshToken: RefreshToken[]= await database
         .select()
         .from(refreshTokens)
         .where(eq(
@@ -39,9 +35,8 @@ export const findRefreshToken = async (token: string, tx?: unknown): Promise<Ref
     return refreshToken[0];
 }
 
-export const deleteRefreshToken = async (token: string, tx?: unknown): Promise<void> => {
-    const client: DbClient = (tx ?? database) as DbClient;
-    await client
+export const deleteRefreshToken = async (token: string): Promise<void> => {
+    await database
         .delete(refreshTokens)
         .where(eq(
             refreshTokens.token, 

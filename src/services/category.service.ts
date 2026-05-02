@@ -7,17 +7,17 @@ import { CategoryWithProductCount } from "../types/categories/category-with-prod
 import { AppError } from "../errors/app.error";
 import { PublicProduct } from "../types/products/public-product.type";
 
-export const createCategory = async (categoryData: NewCategory, tx?: unknown): Promise<PublicCategory> => {
-    const createdCategory: Category = await categoryRepository.createCategory(categoryData, tx);
+export const createCategory = async (categoryData: NewCategory): Promise<PublicCategory> => {
+    const createdCategory: Category = await categoryRepository.createCategory(categoryData);
     return formatCategory(createdCategory);
 };
 
-export const listPublicCategories = async (includeProductCount: boolean, tx?: unknown): Promise<CategoryWithProductCount[]> => {
-    return await categoryRepository.listPublicCategories(includeProductCount, tx);
+export const listPublicCategories = async (includeProductCount: boolean): Promise<CategoryWithProductCount[]> => {
+    return await categoryRepository.listPublicCategories(includeProductCount);
 }
 
-export const getCategoryById = async (categoryId: string, tx?: unknown): Promise<PublicCategory | null> => {
-    const category: Category | null = await categoryRepository.getCategoryById(categoryId, tx);
+export const getCategoryById = async (categoryId: string): Promise<PublicCategory | null> => {
+    const category: Category | null = await categoryRepository.getCategoryById(categoryId);
 
     if (!category) {
         return null;
@@ -26,13 +26,13 @@ export const getCategoryById = async (categoryId: string, tx?: unknown): Promise
     return formatCategory(category);
 }
 
-export const updateCategoryById = async (categoryId: string, categoryData: NewCategory, tx?: unknown): Promise<PublicCategory | null> => {
+export const updateCategoryById = async (categoryId: string, categoryData: NewCategory): Promise<PublicCategory | null> => {
     const updatedCategoryData: NewCategory = {
         ...categoryData,
         updatedAt: new Date()
     }
 
-    const updatedCategory: Category | null = await categoryRepository.updateCategoryById(categoryId, updatedCategoryData, tx);
+    const updatedCategory: Category | null = await categoryRepository.updateCategoryById(categoryId, updatedCategoryData);
 
     if (!updatedCategory) {
         return null;
@@ -41,12 +41,12 @@ export const updateCategoryById = async (categoryId: string, categoryData: NewCa
     return formatCategory(updatedCategory);
 };
 
-export const deleteCategoryById = async (categoryId: string, tx?: unknown): Promise<void> => {
-    const existingProductInCategory: PublicProduct | null = await productService.getProductByCategoryId(categoryId, tx);
+export const deleteCategoryById = async (categoryId: string): Promise<void> => {
+    const existingProductInCategory: PublicProduct | null = await productService.getProductByCategoryId(categoryId);
 
     if (existingProductInCategory) {
         throw new AppError(400, 'Não é possível deletar a categoria pois existem produtos associados a ela');
     }
 
-    await categoryRepository.deleteCategoryById(categoryId, tx);
+    await categoryRepository.deleteCategoryById(categoryId);
 };
