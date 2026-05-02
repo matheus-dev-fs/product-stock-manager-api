@@ -155,6 +155,8 @@ export const getProductStockInfoById = async (
     const productResult: ProductStockInfo[] = await tx
         .select({
             quantity: products.quantity,
+            minimumQuantity: products.minimumQuantity,
+            maximumQuantity: products.maximumQuantity,
             unitPrice: products.unitPrice,
         })
         .from(products)
