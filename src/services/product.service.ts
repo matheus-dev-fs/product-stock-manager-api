@@ -35,8 +35,8 @@ export const getProductByCategoryId = async (categoryId: string): Promise<Public
     return product ? formatProduct(product) : null;
 };
 
-export const getProductByIdWithCategory = async (productId: string): Promise<PublicProductWithDetails | null> => {
-    const product: PublicProductWithDetails | null = await productRepository.getProductByIdWithCategory(productId);
+export const getProductWithDetailsById = async (productId: string): Promise<PublicProductWithDetails | null> => {
+    const product: PublicProductWithDetails | null = await productRepository.getProductWithDetailsById(productId);
     return product;
 };
 

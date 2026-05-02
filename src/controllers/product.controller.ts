@@ -17,9 +17,9 @@ export const listProducts: RequestHandler = async (req, res): Promise<void> => {
     res.status(200).json({ error: null, data: products });
 };
 
-export const getProductByIdWithCategory: RequestHandler = async (req, res): Promise<void> => {
+export const getProductWithDetailsById: RequestHandler = async (req, res): Promise<void> => {
     const { id } = productIdParamSchema.parse(req.params);
-    const product: PublicProductWithDetails | null = await productService.getProductByIdWithCategory(id);
+    const product: PublicProductWithDetails | null = await productService.getProductWithDetailsById(id);
 
     if (!product) {
         throw new AppError(404, 'Produto não encontrado');

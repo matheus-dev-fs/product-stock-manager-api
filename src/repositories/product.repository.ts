@@ -86,7 +86,7 @@ export const getProductByCategoryId = async (categoryId: string): Promise<Produc
     return productsList[0];
 };
 
-export const getProductByIdWithCategory = async (productId: string): Promise<PublicProductWithDetails | null> => {
+export const getProductWithDetailsById = async (productId: string): Promise<PublicProductWithDetails | null> => {
     const product: PublicProductWithDetails[] = await database
         .select({
             id: products.id,
