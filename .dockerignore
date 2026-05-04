@@ -5,3 +5,7 @@ dist
 !.env.example
 .git
 public/avatars
+
+# Logs
+*.log
+logs/

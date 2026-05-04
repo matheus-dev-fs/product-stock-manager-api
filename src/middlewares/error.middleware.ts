@@ -3,6 +3,7 @@ import { ZodError } from 'zod';
 import { DatabaseError } from '../errors/database.error';
 import { AppError } from '../errors/app.error';
 import { $ZodIssue } from 'zod/v4/core';
+import { logger } from '../lib/logger';
 
 export const globalErrorHandler = (
     err: Error & { status?: number, type?: string }, 
@@ -37,12 +38,21 @@ export const globalErrorHandler = (
     }
 
     if (err instanceof DatabaseError) {
-        console.error(`[Database Error] ${err.name}: ${err.message}`, err.stack);
+        logger.error({ 
+            err, 
+            type: err.name, 
+            path: req.originalUrl,
+            method: req.method
+        }, 'Erro interno no banco de dados');
         
         res.status(500).json({ error: 'Erro interno no banco de dados', data: null });
         return;
     }
 
-    console.error('[Unhandled Error]', err);
+    logger.error({ 
+        err, 
+        path: req.originalUrl,
+        method: req.method 
+    }, 'Erro interno do servidor não tratado');
     res.status(500).json({ error: 'Erro interno do servidor', data: null });
 };
