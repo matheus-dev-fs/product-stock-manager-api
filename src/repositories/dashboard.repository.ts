@@ -1,8 +1,9 @@
-import { gte, lte,isNull, sql, and } from "drizzle-orm"
+import { gte, lte, isNull, sql, and, eq, SQL } from "drizzle-orm"
 import { db } from "../db/connection"
 import { products, stockMovements } from "../db/schema"
 import { DateRange } from "../validators/dashboard.validator"
 import { StockMovementSummary } from "../types/stock-movements/stock-movement-summary.type"
+import { OutStockMovementGraphData } from "../types/stock-movements/out-stock-movement-graph.type"
 
 export const getInventoryValue = async (): Promise<number> => {
     const result: { inventoryValue: number }[] = await db
@@ -27,6 +28,39 @@ export const getStockMovementsSummary = async (range: DateRange): Promise<StockM
         .groupBy(stockMovements.type);
 
     const conditions = [];
+
+    if (range.startDate) {
+        const startDate: Date = new Date(range.startDate);
+        conditions.push(gte(stockMovements.createdAt, startDate));
+    }
+
+    if (range.endDate) {
+        const endDate: Date = new Date(range.endDate);
+        endDate.setUTCHours(23, 59, 59, 999);
+        conditions.push(lte(stockMovements.createdAt, endDate));
+    }
+
+    if (conditions.length > 0) {
+        query = query.where(and(...conditions));
+    }
+
+    return await query;
+}
+
+export const getOutStockMovementsGraph = async (range: DateRange): Promise<OutStockMovementGraphData[]> => {
+    const dateFormattedSQL: SQL<string> = sql<string>`TO_CHAR(${stockMovements.createdAt}, 'YYYY-MM-DD')`.mapWith(String);
+
+    let query = db
+        .select({
+            date: dateFormattedSQL,
+            totalValue: sql<number>`SUM(${stockMovements.quantity} * ${stockMovements.unitPrice})`.mapWith(Number)
+        })
+        .from(stockMovements)
+        .groupBy(dateFormattedSQL)
+        .orderBy(dateFormattedSQL)
+        .$dynamic();
+
+    const conditions = [eq(stockMovements.type, 'OUT')];
 
     if (range.startDate) {
         const startDate: Date = new Date(range.startDate);
