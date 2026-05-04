@@ -1,4 +1,4 @@
-import { gte, lte, isNull, sql, and, eq, SQL } from "drizzle-orm"
+import { gte, lte, isNull, sql, and, eq, SQL, lt } from "drizzle-orm"
 import { db } from "../db/connection"
 import { Product, products, stockMovements } from "../db/schema"
 import { DateRange } from "../validators/dashboard.validator"
@@ -91,6 +91,37 @@ export const getLowStockProducts = async (): Promise<Product[]> => {
             )
         )
         .orderBy(products.quantity);
-    
+
     return results;
 }
+
+export const getStagnantProducts = async (range: DateRange): Promise<Product[]> => {
+    const conditions = [eq(stockMovements.type, 'OUT')];
+
+    if (range.startDate) {
+        const startDate: Date = new Date(range.startDate);
+        conditions.push(gte(stockMovements.createdAt, startDate));
+    }
+
+    if (range.endDate) {
+        const endDate: Date = new Date(range.endDate);
+        endDate.setUTCHours(23, 59, 59, 999);
+        conditions.push(lte(stockMovements.createdAt, endDate));
+    }
+
+    const results: Product[] = await db
+        .select()
+        .from(products)
+        .where(
+            and(
+                isNull(products.deletedAt),
+                sql<boolean>`${products.id} NOT IN (
+                    SELECT DISTINCT ${stockMovements.productId}
+                    FROM ${stockMovements}
+                    WHERE ${and(...conditions)}
+                )`.mapWith(Boolean)
+            )
+        )
+
+    return results;
+};

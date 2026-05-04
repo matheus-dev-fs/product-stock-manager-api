@@ -26,3 +26,9 @@ export const getLowStockProducts: RequestHandler = async (req, res): Promise<voi
     const lowStockProducts: PublicProduct[] = await dashboardService.getLowStockProducts();
     res.status(200).json({ error: null, data: lowStockProducts });
 }
+
+export const getStagnantProducts: RequestHandler = async (req, res): Promise<void> => {
+    const query: DateRange = dateRangeSchema.parse(req.query);
+    const stagnantProducts: PublicProduct[] = await dashboardService.getStagnantProducts(query);
+    res.status(200).json({ error: null, data: stagnantProducts });
+}

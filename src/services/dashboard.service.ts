@@ -27,3 +27,8 @@ export const getLowStockProducts = async (): Promise<PublicProduct[]> => {
     const products: Product[] = await dashboardRepository.getLowStockProducts();
     return products.map(formatProduct);
 }
+
+export const getStagnantProducts = async (range: DateRange): Promise<PublicProduct[]> => {
+    const products: Product[] = await dashboardRepository.getStagnantProducts(range);
+    return products.map(formatProduct);
+};
