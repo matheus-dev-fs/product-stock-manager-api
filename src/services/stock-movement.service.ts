@@ -9,7 +9,7 @@ import { ListStockMovementsInput } from "../validators/stock-movement.validator"
 import { StockMovementWithDetails } from "../types/stock-movements/stock-movement-with-details.type";
 
 export const createStockMovement = async (data: Omit<NewStockMovement, 'unitPrice'>): Promise<StockMovement> => {
-    return await transactionRunner.run<StockMovement>(async (txRunner: DbTransaction) => {
+    return await transactionRunner.run<StockMovement>(async (txRunner: DbTransaction): Promise<StockMovement> => {
         const product: ProductStockInfo | null = await productService.getProductStockInfoById(txRunner, data.productId);
 
         if (!product) {
@@ -19,10 +19,8 @@ export const createStockMovement = async (data: Omit<NewStockMovement, 'unitPric
         const currentQuantity: number = Number(product.quantity);
         const movementQuantity: number = Number(data.quantity);
 
-        if (data.type === 'OUT') {
-            if (movementQuantity > currentQuantity) {
-                throw new AppError(400, `Quantidade de estoque insuficiente. Disponível: ${currentQuantity}, solicitado: ${movementQuantity}`);
-            }
+        if (data.type === 'OUT' && movementQuantity > currentQuantity) {
+            throw new AppError(400, `Quantidade de estoque insuficiente. Disponível: ${currentQuantity}, solicitado: ${movementQuantity}`);
         }
 
         const stockMovement: StockMovement = await stockMovementRepository.createStockMovement(txRunner, {
