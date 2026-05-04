@@ -6,7 +6,10 @@ if (!process.env.DATABASE_URL) {
 }
 
 // Create postgres connection
-const queryClient = postgres(process.env.DATABASE_URL);
+const connectionString = process.env.NODE_ENV === 'test' && process.env.DATABASE_TEST_URL
+    ? process.env.DATABASE_TEST_URL
+    : process.env.DATABASE_URL;
+const queryClient = postgres(connectionString);
 
 // Create drizzle instance
 export const db = drizzle(queryClient);
