@@ -1,6 +1,6 @@
 import { gte, lte, isNull, sql, and, eq, SQL } from "drizzle-orm"
 import { db } from "../db/connection"
-import { products, stockMovements } from "../db/schema"
+import { Product, products, stockMovements } from "../db/schema"
 import { DateRange } from "../validators/dashboard.validator"
 import { StockMovementSummary } from "../types/stock-movements/stock-movement-summary.type"
 import { OutStockMovementGraphData } from "../types/stock-movements/out-stock-movement-graph.type"
@@ -78,4 +78,19 @@ export const getOutStockMovementsGraph = async (range: DateRange): Promise<OutSt
     }
 
     return await query;
+}
+
+export const getLowStockProducts = async (): Promise<Product[]> => {
+    const results = await db.
+        select()
+        .from(products)
+        .where(
+            and(
+                sql<boolean>`(${products.quantity} <= (${products.minimumQuantity} * 1.1))`.mapWith(Boolean),
+                isNull(products.deletedAt)
+            )
+        )
+        .orderBy(products.quantity);
+    
+    return results;
 }

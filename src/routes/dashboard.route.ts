@@ -6,5 +6,6 @@ const router: Router = Router();
 router.get('/inventory-value', dashboardController.getInventoryValue);
 router.get('/stock-movements-summary', dashboardController.getStockMovementsSummary);
 router.get('/stock-movements-graph', dashboardController.getOutStockMovementsGraph);
+router.get('/low-stock-products', dashboardController.getLowStockProducts);
 
 export default router;
