@@ -9,3 +9,7 @@ public/avatars
 # Logs
 *.log
 logs/
+
+docker-compose*.yml
+Dockerfile.*
+docker-compose.yml
