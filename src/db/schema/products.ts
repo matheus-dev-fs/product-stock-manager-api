@@ -1,5 +1,5 @@
 import { integer, numeric, pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { categories } from "./categories";
+import { categories } from "./categories.js";
 
 export const unityTypeEnum = pgEnum('unity_type', ['kg', 'g', 'l', 'ml', 'un']);
 

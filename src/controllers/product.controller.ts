@@ -1,9 +1,9 @@
 import { RequestHandler } from "express";
-import { createProductSchema, listProductsSchema, productIdParamSchema, updateProductSchema } from "../validators/product.validator";
-import * as productService from "../services/product.service";
-import { PublicProduct } from "../types/products/public-product.type";
-import { PublicProductWithDetails } from "../types/products/public-product-with-details.type";
-import { AppError } from "../errors/app.error";
+import { createProductSchema, listProductsSchema, productIdParamSchema, updateProductSchema } from "../validators/product.validator.js";
+import * as productService from "../services/product.service.js";
+import { PublicProduct } from "../types/products/public-product.type.js";
+import { PublicProductWithDetails } from "../types/products/public-product-with-details.type.js";
+import { AppError } from "../errors/app.error.js";
 
 export const createProduct: RequestHandler = async (req, res): Promise<void> => {
     const createProductData = createProductSchema.parse(req.body); 

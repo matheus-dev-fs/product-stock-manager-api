@@ -1,4 +1,4 @@
-import { TokenPayload } from './token-payload.interface';
+import { TokenPayload } from './token-payload.interface.js';
 
 declare global {
     namespace Express {

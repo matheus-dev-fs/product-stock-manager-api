@@ -1,12 +1,12 @@
-import { NewStockMovement, StockMovement } from "../db/schema";
-import { AppError } from "../errors/app.error";
-import { transactionRunner } from "../db/transaction-runner";
-import * as stockMovementRepository from "../repositories/stock-movement.repository";
-import * as productService from "./product.service";
-import { ProductStockInfo } from "../types/products/product-stock-info.type";
-import type { DbTransaction } from "../types/database/database.types";
-import { ListStockMovementsInput } from "../validators/stock-movement.validator";
-import { StockMovementWithDetails } from "../types/stock-movements/stock-movement-with-details.type";
+import { NewStockMovement, StockMovement } from "../db/schema/index.js";
+import { AppError } from "../errors/app.error.js";
+import { transactionRunner } from "../db/transaction-runner.js";
+import * as stockMovementRepository from "../repositories/stock-movement.repository.js";
+import * as productService from "./product.service.js";
+import { ProductStockInfo } from "../types/products/product-stock-info.type.js";
+import type { DbTransaction } from "../types/database/database.types.js";
+import { ListStockMovementsInput } from "../validators/stock-movement.validator.js";
+import { StockMovementWithDetails } from "../types/stock-movements/stock-movement-with-details.type.js";
 
 export const createStockMovement = async (data: Omit<NewStockMovement, 'unitPrice'>): Promise<StockMovement> => {
     return await transactionRunner.run<StockMovement>(async (txRunner: DbTransaction): Promise<StockMovement> => {

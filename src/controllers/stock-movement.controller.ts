@@ -1,9 +1,9 @@
 import { RequestHandler } from "express";
-import { createStockMovementSchema, listStockMovementsSchema } from "../validators/stock-movement.validator";
-import { AppError } from "../errors/app.error";
-import * as stockMovementService from '../services/stock-movement.service';
-import { StockMovement } from "../db/schema";
-import { StockMovementWithDetails } from "../types/stock-movements/stock-movement-with-details.type";
+import { createStockMovementSchema, listStockMovementsSchema } from "../validators/stock-movement.validator.js";
+import { AppError } from "../errors/app.error.js";
+import * as stockMovementService from '../services/stock-movement.service.js';
+import { StockMovement } from "../db/schema/index.js";
+import { StockMovementWithDetails } from "../types/stock-movements/stock-movement-with-details.type.js";
 
 export const createStockMovement: RequestHandler = async (req, res): Promise<void> => {
     if (!req.user) {

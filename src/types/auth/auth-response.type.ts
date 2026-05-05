@@ -1,4 +1,4 @@
-import { PublicUser } from "../users/public-user.type";
+import { PublicUser } from "../users/public-user.type.js";
 
 export type AuthResponse = {
     user: PublicUser;

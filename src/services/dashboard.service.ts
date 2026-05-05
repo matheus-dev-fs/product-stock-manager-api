@@ -1,12 +1,12 @@
-import { Product } from "../db/schema";
-import { formatProduct } from "../helpers/products.helper";
-import { formatStockMovementsSummary } from "../helpers/stock-movements.helper";
-import * as dashboardRepository from "../repositories/dashboard.repository";
-import { PublicProduct } from "../types/products/public-product.type";
-import { OutStockMovementGraphData } from "../types/stock-movements/out-stock-movement-graph.type";
-import { StockMovementSummaryFormatted } from "../types/stock-movements/stock-movement-summary-formatted.type";
-import { StockMovementSummary } from "../types/stock-movements/stock-movement-summary.type";
-import { DateRange } from "../validators/dashboard.validator";
+import { Product } from "../db/schema/index.js";
+import { formatProduct } from "../helpers/products.helper.js";
+import { formatStockMovementsSummary } from "../helpers/stock-movements.helper.js";
+import * as dashboardRepository from "../repositories/dashboard.repository.js";
+import { PublicProduct } from "../types/products/public-product.type.js";
+import { OutStockMovementGraphData } from "../types/stock-movements/out-stock-movement-graph.type.js";
+import { StockMovementSummaryFormatted } from "../types/stock-movements/stock-movement-summary-formatted.type.js";
+import { StockMovementSummary } from "../types/stock-movements/stock-movement-summary.type.js";
+import { DateRange } from "../validators/dashboard.validator.js";
 
 export const getInventoryValue = async (): Promise<number> => {
     const inventoryValue: number = await dashboardRepository.getInventoryValue();

@@ -1,6 +1,6 @@
-import { TransactionRunner } from "../interfaces/transaction-runner.interface";
-import { db as database } from "./connection";
-import type { DbClient, DbTransaction } from "../types/database/database.types";
+import { TransactionRunner } from "../interfaces/transaction-runner.interface.js";
+import { db as database } from "./connection.js";
+import type { DbClient, DbTransaction } from "../types/database/database.types.js";
 
 export class DrizzleTransactionRunner implements TransactionRunner {
     constructor(private readonly client: DbClient) {}

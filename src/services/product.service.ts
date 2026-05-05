@@ -1,14 +1,14 @@
-import { NewProduct, Product } from "../db/schema";
-import { PublicCategory } from "../types/categories/public-category.type";
-import * as productRepository from "../repositories/product.repository";
-import * as categoryService from "./category.service";
-import { PublicProduct } from "../types/products/public-product.type";
-import { formatProduct } from "../helpers/products.helper";
-import { AppError } from "../errors/app.error";
-import { isMaxGteMin } from "../helpers/quantities.helper";
-import { PublicProductWithDetails } from "../types/products/public-product-with-details.type";
-import type { DbTransaction } from "../types/database/database.types";
-import { ProductStockInfo } from "../types/products/product-stock-info.type";
+import { NewProduct, Product } from "../db/schema/index.js";
+import { PublicCategory } from "../types/categories/public-category.type.js";
+import * as productRepository from "../repositories/product.repository.js";
+import * as categoryService from "./category.service.js";
+import { PublicProduct } from "../types/products/public-product.type.js";
+import { formatProduct } from "../helpers/products.helper.js";
+import { AppError } from "../errors/app.error.js";
+import { isMaxGteMin } from "../helpers/quantities.helper.js";
+import { PublicProductWithDetails } from "../types/products/public-product-with-details.type.js";
+import type { DbTransaction } from "../types/database/database.types.js";
+import { ProductStockInfo } from "../types/products/product-stock-info.type.js";
 
 export const createProduct = async (productData: NewProduct): Promise<PublicProduct> => {
     const isCategoryValid: PublicCategory | null = await categoryService.getCategoryById(productData.categoryId);

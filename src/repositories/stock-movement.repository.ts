@@ -1,10 +1,10 @@
 import { desc, eq } from "drizzle-orm";
-import { NewStockMovement, products, StockMovement, stockMovements } from "../db/schema";
-import { DatabaseError } from "../errors/database.error";
-import type { DbTransaction } from "../types/database/database.types";
-import { db } from "../db/connection";
-import { ListStockMovementsInput } from "../validators/stock-movement.validator";
-import { StockMovementWithDetails } from "../types/stock-movements/stock-movement-with-details.type";
+import { NewStockMovement, products, StockMovement, stockMovements } from "../db/schema/index.js";
+import { DatabaseError } from "../errors/database.error.js";
+import type { DbTransaction } from "../types/database/database.types.js";
+import { db } from "../db/connection.js";
+import { ListStockMovementsInput } from "../validators/stock-movement.validator.js";
+import { StockMovementWithDetails } from "../types/stock-movements/stock-movement-with-details.type.js";
 
 export const createStockMovement = async (
     tx: DbTransaction,

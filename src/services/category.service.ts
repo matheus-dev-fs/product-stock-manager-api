@@ -1,11 +1,11 @@
-import { PublicCategory } from "../types/categories/public-category.type";
-import * as categoryRepository from "../repositories/category.repository";
-import * as productService from "./product.service";
-import { Category, NewCategory } from "../db/schema";
-import { formatCategory } from "../helpers/categories.helper";
-import { CategoryWithProductCount } from "../types/categories/category-with-product-count.type";
-import { AppError } from "../errors/app.error";
-import { PublicProduct } from "../types/products/public-product.type";
+import { PublicCategory } from "../types/categories/public-category.type.js";
+import * as categoryRepository from "../repositories/category.repository.js";
+import * as productService from "./product.service.js";
+import { Category, NewCategory } from "../db/schema/index.js";
+import { formatCategory } from "../helpers/categories.helper.js";
+import { CategoryWithProductCount } from "../types/categories/category-with-product-count.type.js";
+import { AppError } from "../errors/app.error.js";
+import { PublicProduct } from "../types/products/public-product.type.js";
 
 export const createCategory = async (categoryData: NewCategory): Promise<PublicCategory> => {
     const createdCategory: Category = await categoryRepository.createCategory(categoryData);

@@ -1,9 +1,9 @@
 import { RequestHandler } from "express";
-import * as dashboardService from "../services/dashboard.service";
-import { DateRange, dateRangeSchema } from "../validators/dashboard.validator";
-import { StockMovementSummaryFormatted } from "../types/stock-movements/stock-movement-summary-formatted.type";
-import { OutStockMovementGraphData } from "../types/stock-movements/out-stock-movement-graph.type";
-import { PublicProduct } from "../types/products/public-product.type";
+import * as dashboardService from "../services/dashboard.service.js";
+import { DateRange, dateRangeSchema } from "../validators/dashboard.validator.js";
+import { StockMovementSummaryFormatted } from "../types/stock-movements/stock-movement-summary-formatted.type.js";
+import { OutStockMovementGraphData } from "../types/stock-movements/out-stock-movement-graph.type.js";
+import { PublicProduct } from "../types/products/public-product.type.js";
 
 export const getInventoryValue: RequestHandler = async (req, res): Promise<void> => {
     const inventoryValue: number = await dashboardService.getInventoryValue();

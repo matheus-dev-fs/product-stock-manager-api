@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs/promises";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
-import { generateRandomFilename } from "../helpers/file.helper";
+import { generateRandomFilename } from "../helpers/file.helper.js";
 
 const __filename: string = fileURLToPath(import.meta.url);
 const __dirname: string = path.dirname(__filename);

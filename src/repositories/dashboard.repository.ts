@@ -1,9 +1,9 @@
 import { gte, lte, isNull, sql, and, eq, SQL, lt } from "drizzle-orm"
-import { db } from "../db/connection"
-import { Product, products, stockMovements } from "../db/schema"
-import { DateRange } from "../validators/dashboard.validator"
-import { StockMovementSummary } from "../types/stock-movements/stock-movement-summary.type"
-import { OutStockMovementGraphData } from "../types/stock-movements/out-stock-movement-graph.type"
+import { db } from "../db/connection.js"
+import { Product, products, stockMovements } from "../db/schema/index.js"
+import { DateRange } from "../validators/dashboard.validator.js"
+import { StockMovementSummary } from "../types/stock-movements/stock-movement-summary.type.js"
+import { OutStockMovementGraphData } from "../types/stock-movements/out-stock-movement-graph.type.js"
 
 export const getInventoryValue = async (): Promise<number> => {
     const result: { inventoryValue: number }[] = await db

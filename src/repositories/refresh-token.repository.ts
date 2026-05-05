@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { db as database } from "../db/connection";
-import { type NewRefreshToken, type RefreshToken, refreshTokens } from "../db/schema/refresh-token";
-import { DatabaseError } from "../errors/database.error";
+import { db as database } from "../db/connection.js";
+import { type NewRefreshToken, type RefreshToken, refreshTokens } from "../db/schema/refresh-token.js";
+import { DatabaseError } from "../errors/database.error.js";
 
 export const createRefreshToken = async (userId: string, token: string): Promise<RefreshToken> => {
     const newRefreshToken: NewRefreshToken = {

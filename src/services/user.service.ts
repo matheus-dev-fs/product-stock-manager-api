@@ -1,9 +1,9 @@
-import { NewUser, User } from "../db/schema";
-import { AppError } from "../errors/app.error";
-import { formatUserResponse, hashPassword } from "../helpers/user.helpers";
-import * as userRepository from "../repositories/user.repository";
-import * as fileService from "./file.service";
-import { PublicUser } from "../types/users/public-user.type";
+import { NewUser, User } from "../db/schema/index.js";
+import { AppError } from "../errors/app.error.js";
+import { formatUserResponse, hashPassword } from "../helpers/user.helpers.js";
+import * as userRepository from "../repositories/user.repository.js";
+import * as fileService from "./file.service.js";
+import { PublicUser } from "../types/users/public-user.type.js";
 
 export const createUser = async (data: NewUser): Promise<PublicUser> => {
     const isEmailInUse: boolean = await userRepository.isEmailInUse(data.email);

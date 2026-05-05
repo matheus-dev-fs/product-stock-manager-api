@@ -1,11 +1,11 @@
 import { Router, Request, Response } from 'express';
-import userRoutes from './user.route';
-import authRoutes from './auth.route';
-import categoriesRoutes from './category.route';
-import productsRoutes from './product.route';
-import stockMovementRoutes from './stock-movement.route';
-import dashboardRoutes from './dashboard.route';
-import { authMiddleware } from '../middlewares/auth.middleware';
+import userRoutes from './user.route.js';
+import authRoutes from './auth.route.js';
+import categoriesRoutes from './category.route.js';
+import productsRoutes from './product.route.js';
+import stockMovementRoutes from './stock-movement.route.js';
+import dashboardRoutes from './dashboard.route.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const router: Router = Router();
 

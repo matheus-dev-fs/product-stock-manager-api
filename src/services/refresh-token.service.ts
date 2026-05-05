@@ -1,6 +1,6 @@
-import { RefreshToken } from "../db/schema/refresh-token";
-import { generateRefreshToken } from "../helpers/token.helper";
-import * as refreshTokenRepository from "../repositories/refresh-token.repository";
+import { RefreshToken } from "../db/schema/refresh-token.js";
+import { generateRefreshToken } from "../helpers/token.helper.js";
+import * as refreshTokenRepository from "../repositories/refresh-token.repository.js";
 
 export const createRefreshToken = async (userId: string): Promise<RefreshToken> => {
     const refreshToken: string = generateRefreshToken()

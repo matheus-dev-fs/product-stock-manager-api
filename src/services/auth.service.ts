@@ -1,12 +1,12 @@
-import { User } from "../db/schema";
-import { RefreshToken } from "../db/schema/refresh-token";
-import { AppError } from "../errors/app.error";
-import { generateAccessToken } from "../helpers/token.helper";
-import { comparePassword, formatUserResponse } from "../helpers/user.helpers";
-import { AuthResponse } from "../types/auth/auth-response.type";
-import { PublicUser } from "../types/users/public-user.type";
-import * as userService from "./user.service";
-import * as refreshTokenService from "./refresh-token.service";
+import { User } from "../db/schema/index.js";
+import { RefreshToken } from "../db/schema/refresh-token.js";
+import { AppError } from "../errors/app.error.js";
+import { generateAccessToken } from "../helpers/token.helper.js";
+import { comparePassword, formatUserResponse } from "../helpers/user.helpers.js";
+import { AuthResponse } from "../types/auth/auth-response.type.js";
+import { PublicUser } from "../types/users/public-user.type.js";
+import * as userService from "./user.service.js";
+import * as refreshTokenService from "./refresh-token.service.js";
 
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
     const existingUser: User | null = await userService.getUserByEmail(email);

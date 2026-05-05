@@ -1,8 +1,8 @@
 import { isNull, eq, and, sql } from "drizzle-orm";
-import { db as database } from "../db/connection"
-import { categories, Category, NewCategory, products, Product } from "../db/schema"
-import { DatabaseError } from "../errors/database.error";
-import { CategoryWithProductCount } from "../types/categories/category-with-product-count.type";
+import { db as database } from "../db/connection.js"
+import { categories, Category, NewCategory, products, Product } from "../db/schema/index.js"
+import { DatabaseError } from "../errors/database.error.js"
+import { CategoryWithProductCount } from "../types/categories/category-with-product-count.type.js";
 
 export const createCategory = async (categoryData: NewCategory): Promise<Category> => {
     const result: Category[] = await database.insert(categories).values(categoryData).returning();

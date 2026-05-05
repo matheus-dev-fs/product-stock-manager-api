@@ -1,12 +1,12 @@
 import { RequestHandler } from "express";
-import { loginUserSchema } from "../validators/auth.validator";
-import * as authService from "../services/auth.service";
-import * as userService from "../services/user.service";
-import { AuthResponse } from "../types/auth/auth-response.type";
-import { refreshTokenSchema } from "../validators/refresh-token.validator";
-import { AppError } from "../errors/app.error";
-import { PublicUser } from "../types/users/public-user.type";
-import { TokenPayload } from "../interfaces/token-payload.interface";
+import { loginUserSchema } from "../validators/auth.validator.js";
+import * as authService from "../services/auth.service.js";
+import * as userService from "../services/user.service.js";
+import { AuthResponse } from "../types/auth/auth-response.type.js";
+import { refreshTokenSchema } from "../validators/refresh-token.validator.js";
+import { AppError } from "../errors/app.error.js";
+import { PublicUser } from "../types/users/public-user.type.js";
+import { TokenPayload } from "../interfaces/token-payload.interface.js";
 
 export const login: RequestHandler = async (req, res): Promise<void> => {
     const loginData = loginUserSchema.parse(req.body);

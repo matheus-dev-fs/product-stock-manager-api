@@ -1,9 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
-import { DatabaseError } from '../errors/database.error';
-import { AppError } from '../errors/app.error';
+import { DatabaseError } from '../errors/database.error.js';
+import { AppError } from '../errors/app.error.js';
 import { $ZodIssue } from 'zod/v4/core';
-import { logger } from '../lib/logger';
+import { logger } from '../lib/logger.js';
 
 export const globalErrorHandler = (
     err: Error & { status?: number, type?: string }, 

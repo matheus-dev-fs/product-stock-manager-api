@@ -1,7 +1,7 @@
 import { and, eq, isNull } from "drizzle-orm";
-import { db as database } from "../db/connection";
-import { NewUser, User, users } from "../db/schema";
-import { DatabaseError } from "../errors/database.error";
+import { db as database } from "../db/connection.js";
+import { NewUser, User, users } from "../db/schema/index.js";
+import { DatabaseError } from "../errors/database.error.js";
 
 export const createUser = async (data: NewUser): Promise<User> => {
     const result: User[] = await database.insert(users).values(data).returning();

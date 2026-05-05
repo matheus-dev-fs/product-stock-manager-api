@@ -1,7 +1,7 @@
 import express, { type Express } from 'express';
 import cors from 'cors';
-import router from './routes';
-import { globalErrorHandler } from './middlewares/error.middleware';
+import router from './routes/index.js';
+import { globalErrorHandler } from './middlewares/error.middleware.js';
 
 const app : Express = express();
 const PORT: string | number = process.env.PORT || 3000;

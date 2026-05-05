@@ -1,5 +1,5 @@
 import z from "zod";
-import { isMaxGteMin } from "../helpers/quantities.helper";
+import { isMaxGteMin } from "../helpers/quantities.helper.js";
 
 export const createProductSchema = z.object({
     name: z.string('O nome do produto deve ser uma string')

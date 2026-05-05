@@ -1,5 +1,5 @@
 import jwt, { SignOptions, JwtPayload } from 'jsonwebtoken';
-import { TokenPayload } from '../interfaces/token-payload.interface';
+import { TokenPayload } from '../interfaces/token-payload.interface.js';
 import crypto from 'crypto';
 
 export const generateAccessToken = (payload: TokenPayload): string => {

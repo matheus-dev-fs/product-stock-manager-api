@@ -1,9 +1,9 @@
 import { RequestHandler } from "express";
-import { createUserSchema, userByIdSchema, listUsersSchema, updateUserSchema } from "../validators/user.validator";
-import { PublicUser } from "../types/users/public-user.type";
-import *  as userService from "../services/user.service";
-import * as fileService from "../services/file.service";
-import { AppError } from "../errors/app.error";
+import { createUserSchema, userByIdSchema, listUsersSchema, updateUserSchema } from "../validators/user.validator.js";
+import { PublicUser } from "../types/users/public-user.type.js";
+import *  as userService from "../services/user.service.js";
+import * as fileService from "../services/file.service.js";
+import { AppError } from "../errors/app.error.js";
 
 export const createUser: RequestHandler = async (req, res): Promise<void> => {
     const userData = createUserSchema.parse(req.body);
