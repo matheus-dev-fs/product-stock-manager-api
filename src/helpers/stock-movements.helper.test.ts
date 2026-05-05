@@ -1,5 +1,6 @@
 import { formatStockMovementsSummary } from './stock-movements.helper';
 import type { StockMovementSummary } from '../types/stock-movements/stock-movement-summary.type';
+import { StockMovementSummaryFormatted } from '../types/stock-movements/stock-movement-summary-formatted.type';
 
 describe('stock-movements.helper', () => {
   it('formats summary with defaults', () => {
@@ -7,7 +8,7 @@ describe('stock-movements.helper', () => {
       { type: 'IN', totalValue: 120, count: 2 },
     ];
 
-    const result = formatStockMovementsSummary(data);
+    const result: StockMovementSummaryFormatted  = formatStockMovementsSummary(data);
 
     expect(result).toEqual({
       IN: { value: 120, count: 2 },
