@@ -17,7 +17,6 @@ app.use('/public', express.static('public'));
 app.use('/api', router);
 app.use(globalErrorHandler);
 
-app.listen(PORT, (): void => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+app.listen(Number(PORT), '0.0.0.0', (): void => {
+    console.log(`Server is running on port ${PORT}`);
 });
