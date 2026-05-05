@@ -6,6 +6,10 @@ import * as fileService from "../services/file.service.js";
 import { AppError } from "../errors/app.error.js";
 
 export const createUser: RequestHandler = async (req, res): Promise<void> => {
+    if (req.user?.isAdmin !== true) {
+        throw new AppError(403, 'Apenas administradores podem criar novos usuários');
+    }
+
     const userData = createUserSchema.parse(req.body);
     const user: PublicUser = await userService.createUser(userData);
     res.status(201).json({ error: null, data: user });
