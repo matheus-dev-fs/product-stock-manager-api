@@ -1,5 +1,5 @@
 import { integer, numeric, pgEnum, pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
-import { products } from "./products";
+import { products } from "./products.js";
 import { users } from "./users.js";
 
 export const stockMovementsEnum = pgEnum('stock_movements_enum', ['in', 'out']);
