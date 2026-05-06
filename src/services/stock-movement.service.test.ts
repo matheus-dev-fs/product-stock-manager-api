@@ -49,7 +49,7 @@ describe('stock-movement.service', () => {
         await expect(stockMovementService.createStockMovement({
             productId: 'product-id',
             userId: 'user-id',
-            type: 'OUT',
+            type: 'out',
             quantity: '10',
         })).rejects.toBeInstanceOf(AppError);
 
@@ -66,7 +66,7 @@ describe('stock-movement.service', () => {
             id: 'movement-id',
             productId: 'product-id',
             userId: 'user-id',
-            type: 'IN',
+            type: 'in',
             quantity: '2',
             unitPrice: 10,
             createdAt: new Date('2024-01-01T00:00:00Z'),
@@ -77,14 +77,14 @@ describe('stock-movement.service', () => {
         const result = await stockMovementService.createStockMovement({
             productId: 'product-id',
             userId: 'user-id',
-            type: 'IN',
+            type: 'in',
             quantity: '2',
         });
 
         expect(stockMovementRepositoryMock.createStockMovement).toHaveBeenCalledWith(expect.anything(), {
             productId: 'product-id',
             userId: 'user-id',
-            type: 'IN',
+            type: 'in',
             quantity: '2',
             unitPrice: 10,
         });

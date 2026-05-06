@@ -5,14 +5,14 @@ import { StockMovementSummaryFormatted } from '../types/stock-movements/stock-mo
 describe('stock-movements.helper', () => {
   it('formats summary with defaults', () => {
     const data: StockMovementSummary[] = [
-      { type: 'IN', totalValue: 120, count: 2 },
+      { type: 'in', totalValue: 120, count: 2 },
     ];
 
     const result: StockMovementSummaryFormatted  = formatStockMovementsSummary(data);
 
     expect(result).toEqual({
-      IN: { value: 120, count: 2 },
-      OUT: { value: 0, count: 0 },
+      in: { value: 120, count: 2 },
+      out: { value: 0, count: 0 },
     });
   });
 });
