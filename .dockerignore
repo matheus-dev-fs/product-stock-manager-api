@@ -6,9 +6,11 @@ dist
 .git
 public/avatars
 
-# Logs
 *.log
 logs/
+
+*.test.ts
+*.test.js
 
 docker-compose*.yml
 Dockerfile.*

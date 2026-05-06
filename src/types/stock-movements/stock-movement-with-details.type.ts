@@ -3,7 +3,7 @@ export type StockMovementWithDetails = {
     productId: string;
     productName: string | null;
     userId: string;
-    type: 'IN' | 'OUT';
+    type: 'in' | 'out';
     quantity: string;
     unitPrice: number;
     createdAt: Date;
