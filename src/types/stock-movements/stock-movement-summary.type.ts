@@ -1,5 +1,5 @@
 export type StockMovementSummary = {
-    type: 'IN' | 'OUT';
+    type: 'in' | 'out';
     totalValue: number;
     count: number;
 }

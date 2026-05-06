@@ -1,9 +1,9 @@
 export type StockMovementSummaryFormatted = {
-    IN: {
+    in: {
         value: number;
         count: number;
     };
-    OUT: {
+    out: {
         value: number;
         count: number;
     };

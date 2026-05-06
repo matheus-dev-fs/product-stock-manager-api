@@ -60,7 +60,7 @@ export const getOutStockMovementsGraph = async (range: DateRange): Promise<OutSt
         .orderBy(dateFormattedSQL)
         .$dynamic();
 
-    const conditions = [eq(stockMovements.type, 'OUT')];
+    const conditions = [eq(stockMovements.type, 'out')];
 
     if (range.startDate) {
         const startDate: Date = new Date(range.startDate);
@@ -96,7 +96,7 @@ export const getLowStockProducts = async (): Promise<Product[]> => {
 }
 
 export const getStagnantProducts = async (range: DateRange): Promise<Product[]> => {
-    const conditions = [eq(stockMovements.type, 'OUT')];
+    const conditions = [eq(stockMovements.type, 'out')];
 
     if (range.startDate) {
         const startDate: Date = new Date(range.startDate);

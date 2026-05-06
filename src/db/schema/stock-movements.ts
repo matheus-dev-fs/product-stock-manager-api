@@ -1,8 +1,8 @@
 import { integer, numeric, pgEnum, pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
-import { products } from "./products.js";
-import { users } from "./users.js";
+import { products } from "./products";
+import { users } from "./users";
 
-export const stockMovementsEnum = pgEnum('stock_movements_enum', ['IN', 'OUT']);
+export const stockMovementsEnum = pgEnum('stock_movements_enum', ['in', 'out']);
 
 export const stockMovements = pgTable('stock_movements', {
     id: uuid('id').primaryKey().defaultRandom(),

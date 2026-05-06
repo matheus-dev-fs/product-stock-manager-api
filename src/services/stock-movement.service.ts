@@ -19,7 +19,7 @@ export const createStockMovement = async (data: Omit<NewStockMovement, 'unitPric
         const currentQuantity: number = Number(product.quantity);
         const movementQuantity: number = Number(data.quantity);
 
-        if (data.type === 'OUT' && movementQuantity > currentQuantity) {
+        if (data.type === 'out' && movementQuantity > currentQuantity) {
             throw new AppError(400, `Quantidade de estoque insuficiente. Disponível: ${currentQuantity}, solicitado: ${movementQuantity}`);
         }
 
@@ -28,7 +28,7 @@ export const createStockMovement = async (data: Omit<NewStockMovement, 'unitPric
             unitPrice: product.unitPrice,
         });
 
-        const nextQuantity: number = data.type === 'IN'
+        const nextQuantity: number = data.type === 'in'
             ? currentQuantity + movementQuantity
             : currentQuantity - movementQuantity;
 
