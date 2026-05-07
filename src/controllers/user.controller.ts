@@ -33,12 +33,20 @@ export const getPublicUserById: RequestHandler = async (req, res): Promise<void>
 };
 
 export const deleteUserById: RequestHandler = async (req, res): Promise<void> => {
+    if (req.user?.isAdmin !== true) {
+        throw new AppError(403, 'Apenas administradores podem deletar usuários');
+    }
+
     const { id } = userByIdSchema.parse(req.params);
     await userService.deleteUserById(id);
     res.status(200).json({ error: null, data: null });
 };
 
 export const updateUserById: RequestHandler = async (req, res): Promise<void> => {
+    if (req.user?.isAdmin !== true) {
+        throw new AppError(403, 'Apenas administradores podem atualizar usuários');
+    }
+    
     const { id } = userByIdSchema.parse(req.params);
     const updateUserData = updateUserSchema.parse(req.body);
 
